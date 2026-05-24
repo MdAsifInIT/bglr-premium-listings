@@ -1,0 +1,46 @@
+# dataconnect/example/mutations.gql
+
+# Sync a profile record after user registration succeeds
+mutation CreateUser($fullName: String!, $phoneNumber: String!, $email: String!) @auth(level: USER) {
+  user_insert(data: {
+    id_expr: "auth.uid",
+    email: $email,
+    fullName: $fullName,
+    phoneNumber: $phoneNumber
+  })
+}
+
+# Submit a new premium real estate listing to the database
+mutation CreateProperty(
+  $title: String!,
+  $description: String!,
+  $price: Int!,
+  $bhkCount: Int!,
+  $propertyType: String!,
+  $listingType: String!,
+  $locality: String!,
+  $latitude: Float!,
+  $longitude: Float!,
+  $imageUrls: [String!]!
+) @auth(level: USER) {
+  property_insert(data: {
+    ownerId_expr: "auth.uid",
+    title: $title,
+    description: $description,
+    price: $price,
+    bhkCount: $bhkCount,
+    propertyType: $propertyType,
+    listingType: $listingType,
+    locality: $locality,
+    latitude: $latitude,
+    longitude: $longitude,
+    imageUrls: $imageUrls
+  })
+}
+
+# Admin: flip a property's approval state to true
+mutation ApproveProperty($id: UUID!) @auth(level: USER) {
+  property_update(id: $id, data: {
+    isApproved: true
+  })
+}

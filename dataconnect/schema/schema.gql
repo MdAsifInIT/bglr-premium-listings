@@ -1,0 +1,40 @@
+# dataconnect/schema/schema.gql
+
+type User @table {
+  id: String! @default(expr: "auth.uid")
+  email: String! @unique
+  fullName: String!
+  phoneNumber: String!
+  isAdmin: Boolean! @default(value: false)
+  createdAt: Date! @default(expr: "request.time")
+}
+
+type Property @table {
+  id: UUID! @default(expr: "uuidV4()")
+  owner: User!
+  title: String!
+  description: String!
+  price: Int!
+  bhkCount: Int!
+  propertyType: String! # e.g., "Apartment", "Villa"
+  listingType: String!  # "Rent" or "Sale"
+  locality: String!     # e.g., "Indiranagar", "Koramangala"
+  latitude: Float!
+  longitude: Float!
+  imageUrls: [String!]!
+  isApproved: Boolean! @default(value: false)
+  createdAt: Date! @default(expr: "request.time")
+}
+
+type Favorite @table(key: ["user", "property"]) {
+  user: User!
+  property: Property!
+}
+
+type Report @table {
+  id: UUID! @default(expr: "uuidV4()")
+  reporter: User!
+  property: Property!
+  reason: String!
+  createdAt: Date! @default(expr: "request.time")
+}

@@ -1,0 +1,63 @@
+# dataconnect/example/queries.gql
+
+# Fetch all approved real estate listings for the public discovery feed
+query ListApprovedProperties(
+  $minLat: Float!,
+  $maxLat: Float!,
+  $minLng: Float!,
+  $maxLng: Float!
+) @auth(level: PUBLIC, insecureReason: "Public browsing allowed for property listings") {
+  properties(where: {
+    isApproved: { eq: true }
+    latitude: { ge: $minLat, le: $maxLat }
+    longitude: { ge: $minLng, le: $maxLng }
+  }) {
+    id
+    title
+    description
+    price
+    bhkCount
+    propertyType
+    listingType
+    locality
+    latitude
+    longitude
+    imageUrls
+  }
+}
+
+# Fetch a single property details page by its unique database ID
+query GetPropertyById($id: UUID!) @auth(level: PUBLIC, insecureReason: "Public access for specific property details views") {
+  property(key: { id: $id }) {
+    id
+    title
+    description
+    price
+    bhkCount
+    propertyType
+    listingType
+    locality
+    latitude
+    longitude
+    imageUrls
+    owner {
+      fullName
+      phoneNumber
+    }
+  }
+}
+
+# Fetch all unapproved property listings for the admin moderation queue
+query ListPendingProperties @auth(level: USER) {
+  properties(where: { isApproved: { eq: false } }) {
+    id
+    title
+    price
+    locality
+    propertyType
+    listingType
+    owner {
+      fullName
+    }
+  }
+}
