@@ -53,29 +53,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center p-6 bg-zinc-950">
-      <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-xl max-w-md w-full shadow-2xl">
+    <div className="flex-1 flex items-center justify-center p-6 bg-stone-50 dark:bg-zinc-950">
+      <div className="bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 p-8 rounded-xl max-w-md w-full shadow-xl dark:shadow-2xl">
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl font-semibold text-zinc-100">Welcome Back</h2>
-          <p className="text-zinc-400 text-sm mt-2">Sign in to your premium listings account</p>
+          <h2 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Welcome Back</h2>
+          <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-2">Sign in to your premium listings account</p>
         </div>
 
         {error && (
-          <div className="bg-red-950/50 border border-red-900/50 text-red-400 px-4 py-3 rounded-lg text-sm mb-6">
+          <div className="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm mb-6">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2" htmlFor="email">
+            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider mb-2" htmlFor="email">
               Email Address
             </label>
             <Input
               id="email"
               type="email"
               disabled={loading}
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:border-transparent transition-all"
+              className="w-full bg-stone-50 dark:bg-zinc-950 border border-stone-200 dark:border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-600 dark:focus:ring-emerald-800 focus:border-transparent transition-all"
               placeholder="you@example.com"
               {...register("email")}
             />
@@ -85,14 +85,14 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2" htmlFor="password">
+            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider mb-2" htmlFor="password">
               Password
             </label>
             <Input
               id="password"
               type="password"
               disabled={loading}
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:border-transparent transition-all"
+              className="w-full bg-stone-50 dark:bg-zinc-950 border border-stone-200 dark:border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-600 dark:focus:ring-emerald-800 focus:border-transparent transition-all"
               placeholder="••••••••"
               {...register("password")}
             />
@@ -104,15 +104,15 @@ export default function LoginPage() {
           <Button
             type="submit"
             loading={loading}
-            className="w-full bg-emerald-800 hover:bg-emerald-700 active:bg-emerald-900 text-zinc-100 font-semibold py-2.5 px-4 rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full bg-emerald-700 dark:bg-emerald-800 hover:bg-emerald-600 dark:hover:bg-emerald-700 active:bg-emerald-800 dark:active:bg-emerald-900 text-white dark:text-zinc-100 font-semibold py-2.5 px-4 rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             Sign In
           </Button>
         </form>
 
-        <p className="text-center text-zinc-400 text-sm mt-6">
+        <p className="text-center text-zinc-600 dark:text-zinc-400 text-sm mt-6">
           Don't have an account?{" "}
-          <Link href="/auth/signup" className="text-emerald-500 hover:underline">
+          <Link href="/auth/signup" className="text-emerald-600 dark:text-emerald-500 hover:underline">
             Register
           </Link>
         </p>

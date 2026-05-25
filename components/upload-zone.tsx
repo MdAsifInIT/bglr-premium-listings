@@ -83,7 +83,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
           if (e.dataTransfer.files) handleFiles(e.dataTransfer.files);
         }}
         onClick={() => fileInputRef.current?.click()}
-        className="w-full bg-zinc-950 border-2 border-dashed border-zinc-800 hover:border-emerald-800 rounded-xl p-8 transition-colors flex flex-col items-center justify-center cursor-pointer text-center min-h-[160px]"
+        className="w-full bg-stone-50 dark:bg-zinc-950 border-2 border-dashed border-stone-300 dark:border-zinc-800 hover:border-emerald-600 dark:hover:border-emerald-800 rounded-xl p-8 transition-colors flex flex-col items-center justify-center cursor-pointer text-center min-h-[160px]"
       >
         <input
           type="file"
@@ -96,14 +96,14 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
           }}
         />
         {uploading ? (
-          <div className="flex flex-col items-center gap-2 text-zinc-400">
+          <div className="flex flex-col items-center gap-2 text-zinc-500 dark:text-zinc-400">
             <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
             <p className="text-sm font-medium">Compressing & Uploading...</p>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-2 text-zinc-400">
-            <Upload className="h-8 w-8 text-zinc-500 mb-1" />
-            <p className="text-sm font-medium text-zinc-200">Drag & drop luxury property images</p>
+          <div className="flex flex-col items-center gap-2 text-zinc-500 dark:text-zinc-400">
+            <Upload className="h-8 w-8 text-zinc-400 dark:text-zinc-500 mb-1" />
+            <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Drag & drop luxury property images</p>
             <p className="text-xs text-zinc-500">Supports JPG, PNG (automatically WebP compressed)</p>
           </div>
         )}
@@ -112,7 +112,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
       {value.length > 0 && (
         <div className="grid grid-cols-3 gap-4">
           {value.map((url, index) => (
-            <div key={index} className="relative aspect-video bg-zinc-950 rounded-lg overflow-hidden border border-zinc-800">
+            <div key={index} className="relative aspect-video bg-stone-100 dark:bg-zinc-950 rounded-lg overflow-hidden border border-stone-200 dark:border-zinc-800">
               <img src={url} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
               <button
                 type="button"
@@ -120,7 +120,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
                   e.stopPropagation();
                   onChange(value.filter((_, i) => i !== index));
                 }}
-                className="absolute top-1 right-1 bg-red-950/80 hover:bg-red-900 border border-red-800 text-red-200 p-1 rounded-full cursor-pointer transition-colors"
+                className="absolute top-1 right-1 bg-red-100 dark:bg-red-950/80 hover:bg-red-200 dark:hover:bg-red-900 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-200 p-1 rounded-full cursor-pointer transition-colors"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
