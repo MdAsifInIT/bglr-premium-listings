@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
+import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
 import { connectDataConnectEmulator, getDataConnect } from "firebase/data-connect";
 import { connectorConfig } from "@/src/dataconnect-generated";
 
@@ -26,4 +26,6 @@ export const dataConnectClient = getDataConnect(app, connectorConfig);
 // Automatically bind to local emulators during development runs
 if (process.env.NODE_ENV === "development") {
     connectDataConnectEmulator(dataConnectClient, "127.0.0.1", 9399);
+    connectAuthEmulator(auth, "http://127.0.0.1:9099");
+    connectStorageEmulator(storage, "127.0.0.1", 9199);
 }
