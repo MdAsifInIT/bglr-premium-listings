@@ -69,8 +69,8 @@ export default function SignupPage() {
     <div className="flex-1 flex items-center justify-center p-6 bg-stone-50 dark:bg-zinc-950">
       <div className="bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 p-8 rounded-xl max-w-md w-full shadow-xl dark:shadow-2xl">
         <div className="text-center mb-6">
-          <h2 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Create Account</h2>
-          <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-2">Join Bengaluru's premium property network</p>
+          <h2 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Join Namma Living</h2>
+          <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-2">Join Bengaluru&apos;s premium property network</p>
         </div>
 
         {error && (

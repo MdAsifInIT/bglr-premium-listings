@@ -1,4 +1,4 @@
-# Bengaluru Premium Real Estate Listings - Tasks
+# Namma Living - Premium Bengaluru Real Estate Listings - Tasks
 
 This file tracks the status of tasks for the bglr-premium-listings application.
 

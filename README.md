@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Namma Living — Premium Bengaluru Real Estate
+
+A luxury real estate discovery platform built with [Next.js](https://nextjs.org), Firebase Data Connect, and Tailwind CSS v4. Showcases curated premium residential listings across Bengaluru's most coveted neighborhoods.
 
 ## Getting Started
 

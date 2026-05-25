@@ -15,8 +15,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Bengaluru Premium Listings",
-  description: "Discover luxury real estate in Bengaluru's finest neighborhoods.",
+  title: "Namma Living | Premium Bengaluru Real Estate",
+  description: "Discover curated, high-end luxury residential properties, architectural dwellings, and premium listings across Indiranagar, HSR Layout, Koramangala, and Whitefield.",
 };
 
 export default function RootLayout({

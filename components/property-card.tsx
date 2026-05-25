@@ -77,11 +77,11 @@ export function PropertyCard({ property }: { property: PropertyData }) {
           </div>
 
           {property.imageUrls.length > 1 && !imgError && (
-            <div className="absolute inset-0 flex items-center justify-between p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <button onClick={prevImage} className="p-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-stone-900/50 dark:bg-zinc-950/60 text-stone-50 dark:text-zinc-100 backdrop-blur-md hover:bg-stone-900/70 dark:hover:bg-zinc-950/80 transition-colors duration-200">
+            <div className="absolute inset-0 flex items-center justify-between p-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
+              <button onClick={prevImage} aria-label="Previous image" className="p-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-stone-900/50 dark:bg-zinc-950/60 text-stone-50 dark:text-zinc-100 backdrop-blur-md hover:bg-stone-900/70 dark:hover:bg-zinc-950/80 transition-colors duration-200">
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <button onClick={nextImage} className="p-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-stone-900/50 dark:bg-zinc-950/60 text-stone-50 dark:text-zinc-100 backdrop-blur-md hover:bg-stone-900/70 dark:hover:bg-zinc-950/80 transition-colors duration-200">
+              <button onClick={nextImage} aria-label="Next image" className="p-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-stone-900/50 dark:bg-zinc-950/60 text-stone-50 dark:text-zinc-100 backdrop-blur-md hover:bg-stone-900/70 dark:hover:bg-zinc-950/80 transition-colors duration-200">
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>

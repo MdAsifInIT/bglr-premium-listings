@@ -56,7 +56,7 @@ export default function LoginPage() {
     <div className="flex-1 flex items-center justify-center p-6 bg-stone-50 dark:bg-zinc-950">
       <div className="bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 p-8 rounded-xl max-w-md w-full shadow-xl dark:shadow-2xl">
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Welcome Back</h2>
+          <h2 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Welcome Back to Namma Living</h2>
           <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-2">Sign in to your premium listings account</p>
         </div>
 
@@ -111,7 +111,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center text-zinc-600 dark:text-zinc-400 text-sm mt-6">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/auth/signup" className="text-emerald-600 dark:text-emerald-500 hover:underline">
             Register
           </Link>

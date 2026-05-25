@@ -2,8 +2,8 @@ import { PropertyFeed } from "@/components/property-feed";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Premium Real Estate in Bengaluru | BGLRPremium",
-  description: "Discover curated luxury homes, villas, and apartments in Bengaluru's most exclusive neighborhoods: Indiranagar, Koramangala, Whitefield, and HSR Layout.",
+  title: "Namma Living | Premium Bengaluru Real Estate",
+  description: "Discover curated, high-end luxury residential properties, architectural dwellings, and premium listings across Indiranagar, HSR Layout, Koramangala, and Whitefield.",
   keywords: ["luxury homes bengaluru", "premium real estate bangalore", "villas in whitefield", "apartments in indiranagar", "high-end properties bangalore"],
 };
 
@@ -14,11 +14,11 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-stone-200/50 via-stone-50 to-stone-50 dark:from-zinc-800/20 dark:via-zinc-950 dark:to-zinc-950 pointer-events-none"></div>
         <div className="max-w-4xl mx-auto z-10 relative">
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight leading-[1.1] mb-6">
-            Curated Luxury Living in <br className="hidden md:block" />
-            <span className="text-amber-600 dark:text-amber-500 italic">Bengaluru</span>
+            Namma Living — <br className="hidden md:block" />
+            <span className="text-amber-600 dark:text-amber-500 italic">Luxury Redefined</span>
           </h1>
           <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 font-sans max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-            Discover an exclusive collection of premium homes, villas, and penthouses in the city's most coveted neighborhoods.
+            Discover an exclusive collection of premium homes, villas, and penthouses in the city&apos;s most coveted neighborhoods.
           </p>
         </div>
       </section>

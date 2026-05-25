@@ -14,15 +14,61 @@ export function Navbar() {
 
   // Avoid hydration mismatch
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => setMounted(true), 0);
   }, []);
+
+  const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+
+    if (
+      !("startViewTransition" in document) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setTheme(newTheme);
+      return;
+    }
+
+    const x = e.clientX;
+    const y = e.clientY;
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const transition = (document as any).startViewTransition(() => {
+      setTheme(newTheme);
+    });
+
+    await transition.ready;
+
+    document.documentElement.animate(
+      {
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${endRadius}px at ${x}px ${y}px)`,
+        ],
+      },
+      {
+        duration: 450,
+        easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+        pseudoElement: "::view-transition-new(root)",
+      }
+    );
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-xl bg-stone-50/60 dark:bg-zinc-950/50 border-b border-stone-200/60 dark:border-zinc-800/50 transition-colors duration-300">
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
         <div className="flex items-center gap-10">
-          <Link href="/" className="font-serif text-2xl tracking-tight text-zinc-900 dark:text-zinc-100 font-bold min-h-[44px] flex items-center">
-            BGLR<span className="text-amber-600 dark:text-amber-500">Premium</span>
+          <Link href="/" className="flex items-center min-h-[44px] gap-0" aria-label="Namma Living — Home">
+            <span className="font-sans font-bold tracking-widest text-xs md:text-sm text-zinc-900 dark:text-zinc-100 uppercase">
+              NAMMA
+            </span>
+            <span className="font-serif italic text-base md:text-lg text-amber-600 dark:text-amber-500 ml-1">
+              Living
+            </span>
           </Link>
           <nav className="hidden md:flex items-center gap-4">
             {neighborhoods.map((n) => (
@@ -39,7 +85,7 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {mounted && (
             <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={toggleTheme}
               className="relative min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-stone-200/50 dark:bg-zinc-800/50 hover:bg-stone-300/50 dark:hover:bg-zinc-700/50 transition-colors duration-200"
               aria-label="Toggle theme"
             >

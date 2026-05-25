@@ -2,6 +2,7 @@ import { getPropertyById } from "@/src/dataconnect-generated";
 import { dataConnectClient } from "@/lib/firebase";
 import { MapPin, Bed, Tag, Phone, User } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface PropertyPageProps {
   params: Promise<{ id: string }>;
@@ -31,7 +32,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
       <div className="flex-1 flex items-center justify-center p-12 bg-stone-50 dark:bg-zinc-950">
         <div className="text-center">
           <h1 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-3">Listing Unavailable</h1>
-          <p className="text-zinc-600 dark:text-zinc-400 text-sm mb-6">We couldn't locate a property with this identifier.</p>
+          <div className="text-zinc-600 dark:text-zinc-400">We couldn&apos;t find the property you&apos;re looking for.</div>
           <Link href="/" className="bg-emerald-700 dark:bg-emerald-800 hover:bg-emerald-600 dark:hover:bg-emerald-700 text-white dark:text-zinc-100 px-6 py-2.5 rounded-lg font-medium transition-colors text-sm">Return Home</Link>
         </div>
       </div>
@@ -44,9 +45,9 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
         {/* Image Gallery */}
         {property.imageUrls.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {property.imageUrls.map((url, i) => (
+            {property.imageUrls.map((url: string, i: number) => (
               <div key={i} className={`relative aspect-video bg-stone-200 dark:bg-zinc-900 rounded-xl overflow-hidden border border-stone-200 dark:border-zinc-800 ${i === 0 ? "md:col-span-2" : ""}`}>
-                <img src={url} alt={`${property.title} — Image ${i + 1}`} className="w-full h-full object-cover" />
+                <Image src={url} alt={`${property.title} — Image ${i + 1}`} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" />
               </div>
             ))}
           </div>

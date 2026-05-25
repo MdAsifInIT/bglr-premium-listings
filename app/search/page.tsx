@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useListApprovedProperties } from "@/src/dataconnect-generated/react";
 import { dataConnectClient } from "@/lib/firebase";
-import { MapWrapper } from "@/components/map/map-wrapper";
+import dynamic from "next/dynamic";
+const MapWrapper = dynamic(() => import("@/components/map/map-wrapper").then(m => m.MapWrapper), { ssr: false });
 import { PropertyCard } from "@/components/property-card";
 import { Loader2 } from "lucide-react";
 

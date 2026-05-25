@@ -24,7 +24,7 @@ export const MapWrapper: React.FC<MapWrapperProps> = ({ properties, onBoundsChan
 
   useEffect(() => {
     if ((window as any).google?.maps) {
-      setLoaded(true);
+      setTimeout(() => setLoaded(true), 0);
       return;
     }
     const callbackName = "initMapCallback";

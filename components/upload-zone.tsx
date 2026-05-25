@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, storage } from "@/lib/firebase";
 import { Loader2, Upload, X } from "lucide-react";
+import Image from "next/image";
 
 interface UploadZoneProps {
   value: string[];
@@ -19,7 +20,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const img = new Image();
+        const img = new window.Image();
         img.onload = () => {
           const canvas = document.createElement("canvas");
           let { width, height } = img;
@@ -113,14 +114,15 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
         <div className="grid grid-cols-3 gap-4">
           {value.map((url, index) => (
             <div key={index} className="relative aspect-video bg-stone-100 dark:bg-zinc-950 rounded-lg overflow-hidden border border-stone-200 dark:border-zinc-800">
-              <img src={url} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
+              <Image src={url} alt={`Preview ${index + 1}`} fill sizes="(max-width: 768px) 33vw, 25vw" className="object-cover" />
               <button
                 type="button"
+                aria-label="Remove image"
                 onClick={(e) => {
                   e.stopPropagation();
                   onChange(value.filter((_, i) => i !== index));
                 }}
-                className="absolute top-1 right-1 bg-red-100 dark:bg-red-950/80 hover:bg-red-200 dark:hover:bg-red-900 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-200 p-1 rounded-full cursor-pointer transition-colors"
+                className="absolute top-1 right-1 bg-red-100 dark:bg-red-950/80 hover:bg-red-200 dark:hover:bg-red-900 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-200 flex items-center justify-center rounded-full cursor-pointer transition-colors min-h-[44px] min-w-[44px]"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
