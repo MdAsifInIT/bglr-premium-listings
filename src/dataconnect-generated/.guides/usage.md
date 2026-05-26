@@ -12,20 +12,8 @@ For each operation, there is a wrapper hook that can be used to call the operati
 
 Here are all of the hooks that get generated:
 ```ts
-import { useListApprovedProperties, useGetPropertyById, useListPendingProperties, useListUserProperties, useListUserFavorites, useListUserSavedSearches, useCreateUser, useCreateProperty, useApproveProperty, useDeleteProperty } from '@dataconnect/generated/react';
+import { useCreateUser, useCreateProperty, useApproveProperty, useDeleteProperty, useUpdatePropertyStatus, useCreateFavorite, useDeleteFavorite, useCreateSavedSearch, useCreateLead, useRejectProperty } from '@dataconnect/generated/react';
 // The types of these hooks are available in react/index.d.ts
-
-const { data, isPending, isSuccess, isError, error } = useListApprovedProperties(listApprovedPropertiesVars);
-
-const { data, isPending, isSuccess, isError, error } = useGetPropertyById(getPropertyByIdVars);
-
-const { data, isPending, isSuccess, isError, error } = useListPendingProperties();
-
-const { data, isPending, isSuccess, isError, error } = useListUserProperties();
-
-const { data, isPending, isSuccess, isError, error } = useListUserFavorites();
-
-const { data, isPending, isSuccess, isError, error } = useListUserSavedSearches();
 
 const { data, isPending, isSuccess, isError, error } = useCreateUser(createUserVars);
 
@@ -34,6 +22,18 @@ const { data, isPending, isSuccess, isError, error } = useCreateProperty(createP
 const { data, isPending, isSuccess, isError, error } = useApproveProperty(approvePropertyVars);
 
 const { data, isPending, isSuccess, isError, error } = useDeleteProperty(deletePropertyVars);
+
+const { data, isPending, isSuccess, isError, error } = useUpdatePropertyStatus(updatePropertyStatusVars);
+
+const { data, isPending, isSuccess, isError, error } = useCreateFavorite(createFavoriteVars);
+
+const { data, isPending, isSuccess, isError, error } = useDeleteFavorite(deleteFavoriteVars);
+
+const { data, isPending, isSuccess, isError, error } = useCreateSavedSearch(createSavedSearchVars);
+
+const { data, isPending, isSuccess, isError, error } = useCreateLead(createLeadVars);
+
+const { data, isPending, isSuccess, isError, error } = useRejectProperty(rejectPropertyVars);
 
 ```
 
@@ -72,26 +72,8 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { listApprovedProperties, getPropertyById, listPendingProperties, listUserProperties, listUserFavorites, listUserSavedSearches, createUser, createProperty, approveProperty, deleteProperty } from '@dataconnect/generated';
+import { createUser, createProperty, approveProperty, deleteProperty, updatePropertyStatus, createFavorite, deleteFavorite, createSavedSearch, createLead, rejectProperty } from '@dataconnect/generated';
 
-
-// Operation ListApprovedProperties:  For variables, look at type ListApprovedPropertiesVars in ../index.d.ts
-const { data } = await ListApprovedProperties(dataConnect, listApprovedPropertiesVars);
-
-// Operation GetPropertyById:  For variables, look at type GetPropertyByIdVars in ../index.d.ts
-const { data } = await GetPropertyById(dataConnect, getPropertyByIdVars);
-
-// Operation ListPendingProperties: 
-const { data } = await ListPendingProperties(dataConnect);
-
-// Operation ListUserProperties: 
-const { data } = await ListUserProperties(dataConnect);
-
-// Operation ListUserFavorites: 
-const { data } = await ListUserFavorites(dataConnect);
-
-// Operation ListUserSavedSearches: 
-const { data } = await ListUserSavedSearches(dataConnect);
 
 // Operation CreateUser:  For variables, look at type CreateUserVars in ../index.d.ts
 const { data } = await CreateUser(dataConnect, createUserVars);
@@ -104,6 +86,24 @@ const { data } = await ApproveProperty(dataConnect, approvePropertyVars);
 
 // Operation DeleteProperty:  For variables, look at type DeletePropertyVars in ../index.d.ts
 const { data } = await DeleteProperty(dataConnect, deletePropertyVars);
+
+// Operation UpdatePropertyStatus:  For variables, look at type UpdatePropertyStatusVars in ../index.d.ts
+const { data } = await UpdatePropertyStatus(dataConnect, updatePropertyStatusVars);
+
+// Operation CreateFavorite:  For variables, look at type CreateFavoriteVars in ../index.d.ts
+const { data } = await CreateFavorite(dataConnect, createFavoriteVars);
+
+// Operation DeleteFavorite:  For variables, look at type DeleteFavoriteVars in ../index.d.ts
+const { data } = await DeleteFavorite(dataConnect, deleteFavoriteVars);
+
+// Operation CreateSavedSearch:  For variables, look at type CreateSavedSearchVars in ../index.d.ts
+const { data } = await CreateSavedSearch(dataConnect, createSavedSearchVars);
+
+// Operation CreateLead:  For variables, look at type CreateLeadVars in ../index.d.ts
+const { data } = await CreateLead(dataConnect, createLeadVars);
+
+// Operation RejectProperty:  For variables, look at type RejectPropertyVars in ../index.d.ts
+const { data } = await RejectProperty(dataConnect, rejectPropertyVars);
 
 
 ```

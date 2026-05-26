@@ -28,6 +28,9 @@
 # debug
 npm-debug.log*
 yarn-debug.log*
+
+# app hosting
+apphosting.emulator.yaml
 yarn-error.log*
 .pnpm-debug.log*
 

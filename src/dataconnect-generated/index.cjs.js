@@ -13,96 +13,6 @@ const dataConnectSettings = {
 };
 exports.dataConnectSettings = dataConnectSettings;
 
-const listApprovedPropertiesRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListApprovedProperties', inputVars);
-}
-listApprovedPropertiesRef.operationName = 'ListApprovedProperties';
-exports.listApprovedPropertiesRef = listApprovedPropertiesRef;
-
-exports.listApprovedProperties = function listApprovedProperties(dcOrVars, varsOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  return executeQuery(listApprovedPropertiesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
-}
-;
-
-const getPropertyByIdRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetPropertyById', inputVars);
-}
-getPropertyByIdRef.operationName = 'GetPropertyById';
-exports.getPropertyByIdRef = getPropertyByIdRef;
-
-exports.getPropertyById = function getPropertyById(dcOrVars, varsOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  return executeQuery(getPropertyByIdRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
-}
-;
-
-const listPendingPropertiesRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListPendingProperties');
-}
-listPendingPropertiesRef.operationName = 'ListPendingProperties';
-exports.listPendingPropertiesRef = listPendingPropertiesRef;
-
-exports.listPendingProperties = function listPendingProperties(dcOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
-  return executeQuery(listPendingPropertiesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
-}
-;
-
-const listUserPropertiesRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListUserProperties');
-}
-listUserPropertiesRef.operationName = 'ListUserProperties';
-exports.listUserPropertiesRef = listUserPropertiesRef;
-
-exports.listUserProperties = function listUserProperties(dcOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
-  return executeQuery(listUserPropertiesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
-}
-;
-
-const listUserFavoritesRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListUserFavorites');
-}
-listUserFavoritesRef.operationName = 'ListUserFavorites';
-exports.listUserFavoritesRef = listUserFavoritesRef;
-
-exports.listUserFavorites = function listUserFavorites(dcOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
-  return executeQuery(listUserFavoritesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
-}
-;
-
-const listUserSavedSearchesRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListUserSavedSearches');
-}
-listUserSavedSearchesRef.operationName = 'ListUserSavedSearches';
-exports.listUserSavedSearchesRef = listUserSavedSearchesRef;
-
-exports.listUserSavedSearches = function listUserSavedSearches(dcOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
-  return executeQuery(listUserSavedSearchesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
-}
-;
-
 const createUserRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -226,5 +136,109 @@ exports.createLeadRef = createLeadRef;
 exports.createLead = function createLead(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
   return executeMutation(createLeadRef(dcInstance, inputVars));
+}
+;
+
+const rejectPropertyRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'RejectProperty', inputVars);
+}
+rejectPropertyRef.operationName = 'RejectProperty';
+exports.rejectPropertyRef = rejectPropertyRef;
+
+exports.rejectProperty = function rejectProperty(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(rejectPropertyRef(dcInstance, inputVars));
+}
+;
+
+const listApprovedPropertiesRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListApprovedProperties', inputVars);
+}
+listApprovedPropertiesRef.operationName = 'ListApprovedProperties';
+exports.listApprovedPropertiesRef = listApprovedPropertiesRef;
+
+exports.listApprovedProperties = function listApprovedProperties(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listApprovedPropertiesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+;
+
+const getPropertyByIdRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetPropertyById', inputVars);
+}
+getPropertyByIdRef.operationName = 'GetPropertyById';
+exports.getPropertyByIdRef = getPropertyByIdRef;
+
+exports.getPropertyById = function getPropertyById(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(getPropertyByIdRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+;
+
+const listPendingPropertiesRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListPendingProperties');
+}
+listPendingPropertiesRef.operationName = 'ListPendingProperties';
+exports.listPendingPropertiesRef = listPendingPropertiesRef;
+
+exports.listPendingProperties = function listPendingProperties(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(listPendingPropertiesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+;
+
+const listUserPropertiesRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListUserProperties');
+}
+listUserPropertiesRef.operationName = 'ListUserProperties';
+exports.listUserPropertiesRef = listUserPropertiesRef;
+
+exports.listUserProperties = function listUserProperties(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(listUserPropertiesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+;
+
+const listUserFavoritesRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListUserFavorites');
+}
+listUserFavoritesRef.operationName = 'ListUserFavorites';
+exports.listUserFavoritesRef = listUserFavoritesRef;
+
+exports.listUserFavorites = function listUserFavorites(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(listUserFavoritesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+;
+
+const listUserSavedSearchesRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListUserSavedSearches');
+}
+listUserSavedSearchesRef.operationName = 'ListUserSavedSearches';
+exports.listUserSavedSearchesRef = listUserSavedSearchesRef;
+
+exports.listUserSavedSearches = function listUserSavedSearches(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(listUserSavedSearchesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 ;

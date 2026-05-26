@@ -68,8 +68,8 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
         uploadedUrls.push(url);
       }
       onChange([...value, ...uploadedUrls]);
-    } catch (err: any) {
-      setError(err.message || "Failed to upload one or more images.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to upload one or more images.");
     } finally {
       setUploading(false);
     }

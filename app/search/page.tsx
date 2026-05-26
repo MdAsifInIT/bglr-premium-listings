@@ -9,6 +9,7 @@ import { PropertyCard, PropertyData } from "@/components/property-card";
 import { Loader2 } from "lucide-react";
 
 import { SaveSearchButton } from "./components/save-search-button";
+import { SearchStatusBar } from "./components/search-status-bar";
 
 export default function SearchPage() {
   const [bounds, setBounds] = useState<{
@@ -30,10 +31,14 @@ export default function SearchPage() {
     <div className="flex-1 flex flex-col md:flex-row h-[calc(100vh-64px)] overflow-hidden bg-stone-50 dark:bg-zinc-950">
       {/* Left panel: Listings */}
       <div className="w-full md:w-1/2 h-[50vh] md:h-full overflow-y-auto p-6 flex flex-col gap-6">
-        <div>
-          <h1 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Premium Discovery</h1>
-          <p className="text-zinc-600 dark:text-zinc-400 text-xs mt-1">Explore verified luxury residences in Bangalore</p>
-          <SaveSearchButton bounds={bounds} />
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h1 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Premium Discovery</h1>
+            <p className="text-zinc-600 dark:text-zinc-400 text-xs mt-1">Explore verified luxury residences in Bangalore</p>
+          </div>
+          <div className="shrink-0">
+            <SaveSearchButton bounds={bounds} />
+          </div>
         </div>
 
         {error && (
@@ -41,6 +46,8 @@ export default function SearchPage() {
             Failed to query listings: {error.message}
           </div>
         )}
+
+        <SearchStatusBar count={properties.length} isLoading={isLoading} />
 
         {isLoading ? (
           <div className="flex-1 flex items-center justify-center py-12">
@@ -62,7 +69,7 @@ export default function SearchPage() {
 
       {/* Right panel: Map */}
       <div className="w-full md:w-1/2 h-[50vh] md:h-full border-t md:border-t-0 md:border-l border-stone-200 dark:border-zinc-900 relative">
-        <MapWrapper properties={properties as PropertyData[]} onBoundsChange={setBounds} />
+        <MapWrapper properties={properties as any[]} onBoundsChange={setBounds} />
       </div>
     </div>
   );

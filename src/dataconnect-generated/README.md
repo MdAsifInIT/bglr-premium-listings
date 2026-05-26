@@ -26,6 +26,7 @@ This README will guide you through the process of using the generated JavaScript
   - [*DeleteFavorite*](#deletefavorite)
   - [*CreateSavedSearch*](#createsavedsearch)
   - [*CreateLead*](#createlead)
+  - [*RejectProperty*](#rejectproperty)
 
 # Accessing the connector
 A connector is a collection of Queries and Mutations. One SDK is generated for each connector - this SDK is generated for the connector `example`. You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
@@ -1770,6 +1771,115 @@ console.log(data.lead_insert);
 executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.lead_insert);
+});
+```
+
+## RejectProperty
+You can execute the `RejectProperty` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+rejectProperty(vars: RejectPropertyVariables): MutationPromise<RejectPropertyData, RejectPropertyVariables>;
+
+interface RejectPropertyRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: RejectPropertyVariables): MutationRef<RejectPropertyData, RejectPropertyVariables>;
+}
+export const rejectPropertyRef: RejectPropertyRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+rejectProperty(dc: DataConnect, vars: RejectPropertyVariables): MutationPromise<RejectPropertyData, RejectPropertyVariables>;
+
+interface RejectPropertyRef {
+  ...
+  (dc: DataConnect, vars: RejectPropertyVariables): MutationRef<RejectPropertyData, RejectPropertyVariables>;
+}
+export const rejectPropertyRef: RejectPropertyRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the rejectPropertyRef:
+```typescript
+const name = rejectPropertyRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `RejectProperty` mutation requires an argument of type `RejectPropertyVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface RejectPropertyVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `RejectProperty` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `RejectPropertyData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface RejectPropertyData {
+  property_delete?: Property_Key | null;
+}
+```
+### Using `RejectProperty`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, rejectProperty, RejectPropertyVariables } from '@dataconnect/generated';
+
+// The `RejectProperty` mutation requires an argument of type `RejectPropertyVariables`:
+const rejectPropertyVars: RejectPropertyVariables = {
+  id: ..., 
+};
+
+// Call the `rejectProperty()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await rejectProperty(rejectPropertyVars);
+// Variables can be defined inline as well.
+const { data } = await rejectProperty({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await rejectProperty(dataConnect, rejectPropertyVars);
+
+console.log(data.property_delete);
+
+// Or, you can use the `Promise` API.
+rejectProperty(rejectPropertyVars).then((response) => {
+  const data = response.data;
+  console.log(data.property_delete);
+});
+```
+
+### Using `RejectProperty`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, rejectPropertyRef, RejectPropertyVariables } from '@dataconnect/generated';
+
+// The `RejectProperty` mutation requires an argument of type `RejectPropertyVariables`:
+const rejectPropertyVars: RejectPropertyVariables = {
+  id: ..., 
+};
+
+// Call the `rejectPropertyRef()` function to get a reference to the mutation.
+const ref = rejectPropertyRef(rejectPropertyVars);
+// Variables can be defined inline as well.
+const ref = rejectPropertyRef({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = rejectPropertyRef(dataConnect, rejectPropertyVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.property_delete);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.property_delete);
 });
 ```
 

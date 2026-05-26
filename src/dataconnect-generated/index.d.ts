@@ -205,6 +205,14 @@ export interface Property_Key {
   __typename?: 'Property_Key';
 }
 
+export interface RejectPropertyData {
+  property_delete?: Property_Key | null;
+}
+
+export interface RejectPropertyVariables {
+  id: UUIDString;
+}
+
 export interface Report_Key {
   id: UUIDString;
   __typename?: 'Report_Key';
@@ -228,78 +236,6 @@ export interface User_Key {
   id: string;
   __typename?: 'User_Key';
 }
-
-interface ListApprovedPropertiesRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: ListApprovedPropertiesVariables): QueryRef<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: ListApprovedPropertiesVariables): QueryRef<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
-  operationName: string;
-}
-export const listApprovedPropertiesRef: ListApprovedPropertiesRef;
-
-export function listApprovedProperties(vars: ListApprovedPropertiesVariables, options?: ExecuteQueryOptions): QueryPromise<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
-export function listApprovedProperties(dc: DataConnect, vars: ListApprovedPropertiesVariables, options?: ExecuteQueryOptions): QueryPromise<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
-
-interface GetPropertyByIdRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: GetPropertyByIdVariables): QueryRef<GetPropertyByIdData, GetPropertyByIdVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: GetPropertyByIdVariables): QueryRef<GetPropertyByIdData, GetPropertyByIdVariables>;
-  operationName: string;
-}
-export const getPropertyByIdRef: GetPropertyByIdRef;
-
-export function getPropertyById(vars: GetPropertyByIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetPropertyByIdData, GetPropertyByIdVariables>;
-export function getPropertyById(dc: DataConnect, vars: GetPropertyByIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetPropertyByIdData, GetPropertyByIdVariables>;
-
-interface ListPendingPropertiesRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListPendingPropertiesData, undefined>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListPendingPropertiesData, undefined>;
-  operationName: string;
-}
-export const listPendingPropertiesRef: ListPendingPropertiesRef;
-
-export function listPendingProperties(options?: ExecuteQueryOptions): QueryPromise<ListPendingPropertiesData, undefined>;
-export function listPendingProperties(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListPendingPropertiesData, undefined>;
-
-interface ListUserPropertiesRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListUserPropertiesData, undefined>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListUserPropertiesData, undefined>;
-  operationName: string;
-}
-export const listUserPropertiesRef: ListUserPropertiesRef;
-
-export function listUserProperties(options?: ExecuteQueryOptions): QueryPromise<ListUserPropertiesData, undefined>;
-export function listUserProperties(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListUserPropertiesData, undefined>;
-
-interface ListUserFavoritesRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListUserFavoritesData, undefined>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListUserFavoritesData, undefined>;
-  operationName: string;
-}
-export const listUserFavoritesRef: ListUserFavoritesRef;
-
-export function listUserFavorites(options?: ExecuteQueryOptions): QueryPromise<ListUserFavoritesData, undefined>;
-export function listUserFavorites(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListUserFavoritesData, undefined>;
-
-interface ListUserSavedSearchesRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListUserSavedSearchesData, undefined>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListUserSavedSearchesData, undefined>;
-  operationName: string;
-}
-export const listUserSavedSearchesRef: ListUserSavedSearchesRef;
-
-export function listUserSavedSearches(options?: ExecuteQueryOptions): QueryPromise<ListUserSavedSearchesData, undefined>;
-export function listUserSavedSearches(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListUserSavedSearchesData, undefined>;
 
 interface CreateUserRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -408,4 +344,88 @@ export const createLeadRef: CreateLeadRef;
 
 export function createLead(vars: CreateLeadVariables): MutationPromise<CreateLeadData, CreateLeadVariables>;
 export function createLead(dc: DataConnect, vars: CreateLeadVariables): MutationPromise<CreateLeadData, CreateLeadVariables>;
+
+interface RejectPropertyRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: RejectPropertyVariables): MutationRef<RejectPropertyData, RejectPropertyVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: RejectPropertyVariables): MutationRef<RejectPropertyData, RejectPropertyVariables>;
+  operationName: string;
+}
+export const rejectPropertyRef: RejectPropertyRef;
+
+export function rejectProperty(vars: RejectPropertyVariables): MutationPromise<RejectPropertyData, RejectPropertyVariables>;
+export function rejectProperty(dc: DataConnect, vars: RejectPropertyVariables): MutationPromise<RejectPropertyData, RejectPropertyVariables>;
+
+interface ListApprovedPropertiesRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: ListApprovedPropertiesVariables): QueryRef<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: ListApprovedPropertiesVariables): QueryRef<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
+  operationName: string;
+}
+export const listApprovedPropertiesRef: ListApprovedPropertiesRef;
+
+export function listApprovedProperties(vars: ListApprovedPropertiesVariables, options?: ExecuteQueryOptions): QueryPromise<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
+export function listApprovedProperties(dc: DataConnect, vars: ListApprovedPropertiesVariables, options?: ExecuteQueryOptions): QueryPromise<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
+
+interface GetPropertyByIdRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetPropertyByIdVariables): QueryRef<GetPropertyByIdData, GetPropertyByIdVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: GetPropertyByIdVariables): QueryRef<GetPropertyByIdData, GetPropertyByIdVariables>;
+  operationName: string;
+}
+export const getPropertyByIdRef: GetPropertyByIdRef;
+
+export function getPropertyById(vars: GetPropertyByIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetPropertyByIdData, GetPropertyByIdVariables>;
+export function getPropertyById(dc: DataConnect, vars: GetPropertyByIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetPropertyByIdData, GetPropertyByIdVariables>;
+
+interface ListPendingPropertiesRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListPendingPropertiesData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<ListPendingPropertiesData, undefined>;
+  operationName: string;
+}
+export const listPendingPropertiesRef: ListPendingPropertiesRef;
+
+export function listPendingProperties(options?: ExecuteQueryOptions): QueryPromise<ListPendingPropertiesData, undefined>;
+export function listPendingProperties(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListPendingPropertiesData, undefined>;
+
+interface ListUserPropertiesRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListUserPropertiesData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<ListUserPropertiesData, undefined>;
+  operationName: string;
+}
+export const listUserPropertiesRef: ListUserPropertiesRef;
+
+export function listUserProperties(options?: ExecuteQueryOptions): QueryPromise<ListUserPropertiesData, undefined>;
+export function listUserProperties(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListUserPropertiesData, undefined>;
+
+interface ListUserFavoritesRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListUserFavoritesData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<ListUserFavoritesData, undefined>;
+  operationName: string;
+}
+export const listUserFavoritesRef: ListUserFavoritesRef;
+
+export function listUserFavorites(options?: ExecuteQueryOptions): QueryPromise<ListUserFavoritesData, undefined>;
+export function listUserFavorites(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListUserFavoritesData, undefined>;
+
+interface ListUserSavedSearchesRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListUserSavedSearchesData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<ListUserSavedSearchesData, undefined>;
+  operationName: string;
+}
+export const listUserSavedSearchesRef: ListUserSavedSearchesRef;
+
+export function listUserSavedSearches(options?: ExecuteQueryOptions): QueryPromise<ListUserSavedSearchesData, undefined>;
+export function listUserSavedSearches(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListUserSavedSearchesData, undefined>;
 

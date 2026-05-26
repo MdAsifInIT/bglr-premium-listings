@@ -32,7 +32,7 @@ type PropertyFormValues = z.infer<typeof propertySchema>;
 export default function CreateListingPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<unknown>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -66,8 +66,8 @@ export default function CreateListingPage() {
     try {
       await createProperty(data);
       router.push("/");
-    } catch (err: any) {
-      setError(err.message || "Failed to commit listing to database.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to commit listing to database.");
     } finally {
       setSubmitting(false);
     }

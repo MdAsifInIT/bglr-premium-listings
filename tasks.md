@@ -26,6 +26,27 @@ This file tracks the status of tasks for the bglr-premium-listings application.
 - [x] Append DeleteProperty, UpdatePropertyStatus, CreateFavorite, DeleteFavorite, CreateSavedSearch, CreateLead mutations (`dataconnect/example/mutations.gql`)
 - [x] Regenerate Data Connect SDK with correct forward-slash output directory paths
 
+## Phase 8 — Spatial Map Wiring
+- [x] Inject API key into map script URL
+- [x] Implement theme-aware map styles (dark/light)
+- [x] Upgrade markers to AdvancedMarkerElement with custom price pills
+- [x] Extract and implement `SearchStatusBar` with loading states
+
+## Phase 9 — Admin Moderation Console
+- [x] Add `RejectProperty` hard-delete mutation to Data Connect
+- [x] Implement `AdminGuard` for client-side route protection
+- [x] Build rich `ModerationCard` with Approve/Reject flows and animations
+- [x] Refactor `/admin/page.tsx` for elegant empty states and fluid UI
+
+## Phase 10 — Production Deployment Prep
+- [x] Write `apphosting.yaml` for Cloud Run scaling & secrets
+- [x] Write `apphosting.emulator.yaml` for local overrides
+- [x] Secure `next.config.ts` with strict HTTP headers
+- [x] Integrate `apphosting` block into `firebase.json`
+
+## Verification
+- [x] Run automated build and lint checks
+
 ## Phase 5: Manage Listings Owner Dashboard
 - [x] Create dashboard header with glassmorphic metrics cards (`dashboard-header.tsx`)
 - [x] Create listing row with pause/activate and delete controls (`listing-row.tsx`)

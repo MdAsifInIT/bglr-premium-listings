@@ -41,11 +41,12 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
       router.push("/");
-    } catch (err: any) {
-      if (err.code === "auth/invalid-credential" || err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+    } catch (err) {
+      const errorWithCode = err as Error & { code?: string };
+      if (errorWithCode.code === "auth/invalid-credential" || errorWithCode.code === "auth/user-not-found" || errorWithCode.code === "auth/wrong-password") {
         setError("Invalid email or password. Please try again.");
       } else {
-        setError(err.message || "An unexpected error occurred during login.");
+        setError(err instanceof Error ? err.message : "An unexpected error occurred during login.");
       }
     } finally {
       setLoading(false);

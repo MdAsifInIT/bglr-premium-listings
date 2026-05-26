@@ -54,11 +54,12 @@ export default function SignupPage() {
       });
 
       router.push("/");
-    } catch (err: any) {
-      if (err.code === "auth/email-already-in-use") {
-        setError("This email address is already in use.");
+    } catch (err) {
+      const errorWithCode = err as Error & { code?: string };
+      if (errorWithCode.code === "auth/email-already-in-use") {
+        setError("This email is already registered. Please log in.");
       } else {
-        setError(err.message || "An unexpected error occurred during signup.");
+        setError(err instanceof Error ? err.message : "Failed to create account. Please try again.");
       }
     } finally {
       setLoading(false);

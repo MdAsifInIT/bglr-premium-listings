@@ -100,3 +100,8 @@ mutation CreateLead(
     clientMessage: $clientMessage
   })
 }
+
+# Admin: reject and delete a property listing
+mutation RejectProperty($id: UUID!) @auth(level: USER) {
+  property_delete(id: $id)
+}
