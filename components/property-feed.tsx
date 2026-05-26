@@ -2,7 +2,8 @@
 
 import { useListApprovedProperties } from "@/src/dataconnect-generated/react";
 import { dataConnectClient } from "@/lib/firebase";
-import { PropertyCard, PropertyCardSkeleton } from "./property-card";
+import { PropertyCard, PropertyData } from "./property-card";
+import { PropertyCardSkeleton } from "./property-card-skeleton";
 import { motion, Variants } from "framer-motion";
 
 const container: Variants = {
@@ -66,7 +67,7 @@ export function PropertyFeed() {
     >
       {properties.map((property) => (
         <motion.div key={property.id} variants={item}>
-          <PropertyCard property={property as any} />
+          <PropertyCard property={property as PropertyData} />
         </motion.div>
       ))}
     </motion.div>

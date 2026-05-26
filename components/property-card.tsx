@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MapPin, BedDouble, ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { FavoriteButton } from "@/components/favorite-button";
 
 export interface PropertyData {
   id: string;
@@ -76,6 +77,10 @@ export function PropertyCard({ property }: { property: PropertyData }) {
             </span>
           </div>
 
+          <div className="absolute top-3 right-3 z-20">
+            <FavoriteButton propertyId={property.id} />
+          </div>
+
           {property.imageUrls.length > 1 && !imgError && (
             <div className="absolute inset-0 flex items-center justify-between p-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
               <button onClick={prevImage} aria-label="Previous image" className="p-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-stone-900/50 dark:bg-zinc-950/60 text-stone-50 dark:text-zinc-100 backdrop-blur-md hover:bg-stone-900/70 dark:hover:bg-zinc-950/80 transition-colors duration-200">
@@ -128,20 +133,4 @@ export function PropertyCard({ property }: { property: PropertyData }) {
   );
 }
 
-export function PropertyCardSkeleton() {
-  return (
-    <div className="rounded-xl overflow-hidden bg-white dark:bg-zinc-900 border border-stone-200/60 dark:border-zinc-800/50 animate-pulse">
-      <div className="aspect-[4/3] w-full bg-stone-100 dark:bg-zinc-800" />
-      <div className="p-5 flex flex-col gap-4">
-        <div className="flex justify-between items-center gap-4">
-          <div className="h-5 bg-stone-200 dark:bg-zinc-800 rounded w-2/3" />
-          <div className="h-5 bg-stone-200 dark:bg-zinc-800 rounded w-1/4" />
-        </div>
-        <div className="flex gap-4">
-          <div className="h-4 bg-stone-200 dark:bg-zinc-800 rounded w-1/3" />
-          <div className="h-4 bg-stone-200 dark:bg-zinc-800 rounded w-1/4" />
-        </div>
-      </div>
-    </div>
-  );
-}
+

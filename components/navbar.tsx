@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -83,6 +83,16 @@ export function Navbar() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
+          {mounted && (
+            <Link
+              href="/shortlist"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-stone-200/50 dark:bg-zinc-800/50 hover:bg-stone-300/50 dark:hover:bg-zinc-700/50 text-zinc-700 dark:text-zinc-300 transition-colors duration-200"
+              aria-label="View shortlist"
+            >
+              <Heart className="w-5 h-5" />
+            </Link>
+          )}
+
           {mounted && (
             <button
               onClick={toggleTheme}

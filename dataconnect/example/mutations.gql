@@ -44,3 +44,59 @@ mutation ApproveProperty($id: UUID!) @auth(level: USER) {
     isApproved: true
   })
 }
+
+# Delete a property owned by the current user
+mutation DeleteProperty($id: UUID!) @auth(level: USER) {
+  property_delete(
+    first: { where: { id: { eq: $id }, ownerId: { eq_expr: "auth.uid" } } }
+  )
+}
+
+# Toggle a property's approval status (for owner "pause" functionality)
+mutation UpdatePropertyStatus($id: UUID!, $isApproved: Boolean!) @auth(level: USER) {
+  property_update(
+    first: { where: { id: { eq: $id }, ownerId: { eq_expr: "auth.uid" } } },
+    data: { isApproved: $isApproved }
+  )
+}
+
+# Add a property to the user's favorites (shortlist)
+mutation CreateFavorite($propertyId: UUID!) @auth(level: USER) {
+  favorite_upsert(data: {
+    userId_expr: "auth.uid",
+    propertyId: $propertyId
+  })
+}
+
+# Remove a property from the user's favorites
+mutation DeleteFavorite($propertyId: UUID!) @auth(level: USER) {
+  favorite_delete(
+    key: { userId_expr: "auth.uid", propertyId: $propertyId }
+  )
+}
+
+# Save a search configuration
+mutation CreateSavedSearch($filters: String!, $label: String) @auth(level: USER) {
+  savedSearch_insert(data: {
+    userId_expr: "auth.uid",
+    filters: $filters,
+    label: $label
+  })
+}
+
+# Log a lead inquiry (PUBLIC so unauthenticated users can inquire)
+mutation CreateLead(
+  $propertyId: UUID!,
+  $agentPhone: String!,
+  $clientName: String!,
+  $clientPhone: String!,
+  $clientMessage: String
+) @auth(level: PUBLIC, insecureReason: "Unauthenticated users can submit property inquiries") {
+  lead_insert(data: {
+    propertyId: $propertyId,
+    agentPhone: $agentPhone,
+    clientName: $clientName,
+    clientPhone: $clientPhone,
+    clientMessage: $clientMessage
+  })
+}

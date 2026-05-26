@@ -38,3 +38,21 @@ type Report @table {
   reason: String!
   createdAt: Date! @default(expr: "request.time")
 }
+
+type SavedSearch @table {
+  id: UUID! @default(expr: "uuidV4()")
+  user: User!
+  filters: String!
+  label: String
+  createdAt: Date! @default(expr: "request.time")
+}
+
+type Lead @table {
+  id: UUID! @default(expr: "uuidV4()")
+  property: Property!
+  agentPhone: String!
+  clientName: String!
+  clientPhone: String!
+  clientMessage: String
+  createdAt: Date! @default(expr: "request.time")
+}

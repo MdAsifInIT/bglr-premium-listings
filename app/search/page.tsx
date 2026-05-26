@@ -5,8 +5,10 @@ import { useListApprovedProperties } from "@/src/dataconnect-generated/react";
 import { dataConnectClient } from "@/lib/firebase";
 import dynamic from "next/dynamic";
 const MapWrapper = dynamic(() => import("@/components/map/map-wrapper").then(m => m.MapWrapper), { ssr: false });
-import { PropertyCard } from "@/components/property-card";
+import { PropertyCard, PropertyData } from "@/components/property-card";
 import { Loader2 } from "lucide-react";
+
+import { SaveSearchButton } from "./components/save-search-button";
 
 export default function SearchPage() {
   const [bounds, setBounds] = useState<{
@@ -31,6 +33,7 @@ export default function SearchPage() {
         <div>
           <h1 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Premium Discovery</h1>
           <p className="text-zinc-600 dark:text-zinc-400 text-xs mt-1">Explore verified luxury residences in Bangalore</p>
+          <SaveSearchButton bounds={bounds} />
         </div>
 
         {error && (
@@ -51,7 +54,7 @@ export default function SearchPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-12">
             {properties.map((prop) => (
-              <PropertyCard key={prop.id} property={prop as any} />
+              <PropertyCard key={prop.id} property={prop as PropertyData} />
             ))}
           </div>
         )}
@@ -59,7 +62,7 @@ export default function SearchPage() {
 
       {/* Right panel: Map */}
       <div className="w-full md:w-1/2 h-[50vh] md:h-full border-t md:border-t-0 md:border-l border-stone-200 dark:border-zinc-900 relative">
-        <MapWrapper properties={properties as any} onBoundsChange={setBounds} />
+        <MapWrapper properties={properties as PropertyData[]} onBoundsChange={setBounds} />
       </div>
     </div>
   );

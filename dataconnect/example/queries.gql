@@ -61,3 +61,43 @@ query ListPendingProperties @auth(level: USER) {
     }
   }
 }
+
+# Fetch all properties owned by the currently authenticated user
+query ListUserProperties @auth(level: USER) {
+  properties(where: { ownerId: { eq_expr: "auth.uid" } }) {
+    id
+    title
+    price
+    locality
+    propertyType
+    listingType
+    isApproved
+    imageUrls
+    createdAt
+  }
+}
+
+# Fetch all favorites (shortlisted properties) for the current user
+query ListUserFavorites @auth(level: USER) {
+  favorites(where: { userId: { eq_expr: "auth.uid" } }) {
+    property {
+      id
+      title
+      price
+      locality
+      bhkCount
+      imageUrls
+      listingType
+    }
+  }
+}
+
+# Fetch all saved searches for the current user
+query ListUserSavedSearches @auth(level: USER) {
+  savedSearches(where: { userId: { eq_expr: "auth.uid" } }) {
+    id
+    filters
+    label
+    createdAt
+  }
+}
