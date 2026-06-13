@@ -105,3 +105,35 @@ mutation CreateLead(
 mutation RejectProperty($id: UUID!) @auth(level: USER) {
   property_delete(id: $id)
 }
+
+# Update all fields of an existing property listing (for owner edits)
+mutation UpdateProperty(
+  $id: UUID!,
+  $title: String!,
+  $description: String!,
+  $price: Int!,
+  $bhkCount: Int!,
+  $propertyType: String!,
+  $listingType: String!,
+  $locality: String!,
+  $latitude: Float!,
+  $longitude: Float!,
+  $imageUrls: [String!]!
+) @auth(level: USER) {
+  property_update(
+    first: { where: { id: { eq: $id }, ownerId: { eq_expr: "auth.uid" } } },
+    data: {
+      title: $title,
+      description: $description,
+      price: $price,
+      bhkCount: $bhkCount,
+      propertyType: $propertyType,
+      listingType: $listingType,
+      locality: $locality,
+      latitude: $latitude,
+      longitude: $longitude,
+      imageUrls: $imageUrls,
+      isApproved: false
+    }
+  )
+}

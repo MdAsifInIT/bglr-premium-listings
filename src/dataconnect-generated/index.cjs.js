@@ -41,6 +41,20 @@ exports.createProperty = function createProperty(dcOrVars, vars) {
 }
 ;
 
+const updatePropertyRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'UpdateProperty', inputVars);
+}
+updatePropertyRef.operationName = 'UpdateProperty';
+exports.updatePropertyRef = updatePropertyRef;
+
+exports.updateProperty = function updateProperty(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(updatePropertyRef(dcInstance, inputVars));
+}
+;
+
 const approvePropertyRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();

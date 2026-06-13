@@ -24,10 +24,16 @@ export const storage = getStorage(app);
 export const dataConnectClient = getDataConnect(app, connectorConfig);
 
 // Automatically bind to local emulators during development runs
-let emulatorsConnected = false;
-if (process.env.NODE_ENV === "development" && !emulatorsConnected) {
-    connectDataConnectEmulator(dataConnectClient, "127.0.0.1", 9399);
-    connectAuthEmulator(auth, "http://127.0.0.1:9099");
-    connectStorageEmulator(storage, "127.0.0.1", 9199);
-    emulatorsConnected = true;
+if (process.env.NODE_ENV === "development") {
+    const g = globalThis as any;
+    if (!g._firebaseEmulatorsConnected) {
+        try {
+            connectDataConnectEmulator(dataConnectClient, "127.0.0.1", 9399);
+            connectAuthEmulator(auth, "http://127.0.0.1:9099");
+            connectStorageEmulator(storage, "127.0.0.1", 9199);
+            g._firebaseEmulatorsConnected = true;
+        } catch (e) {
+            console.warn("Firebase emulators already connected or failed to connect:", e);
+        }
+    }
 }

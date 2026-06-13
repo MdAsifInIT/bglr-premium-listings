@@ -1,0 +1,46 @@
+{
+	"name": "Namma Living Dev Container",
+	"image": "mcr.microsoft.com/devcontainers/base:trixie",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "20"
+		},
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "17"
+		}
+	},
+	"forwardPorts": [3000, 4000, 9099, 9199, 9399],
+	"portsAttributes": {
+		"3000": {
+			"label": "Next.js Web App",
+			"onAutoForward": "notify"
+		},
+		"4000": {
+			"label": "Firebase Emulator UI",
+			"onAutoForward": "notify"
+		},
+		"9099": {
+			"label": "Firebase Auth Emulator",
+			"onAutoForward": "ignore"
+		},
+		"9199": {
+			"label": "Firebase Storage Emulator",
+			"onAutoForward": "ignore"
+		},
+		"9399": {
+			"label": "Firebase Data Connect Emulator",
+			"onAutoForward": "ignore"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"firebase.firebase-vscode",
+				"GraphQL.vscode-graphql-syntax"
+			]
+		}
+	},
+	"postCreateCommand": "npm install && npm install -g firebase-tools"
+}

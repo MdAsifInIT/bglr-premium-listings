@@ -5,8 +5,9 @@ import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteProperty, useUpdatePropertyStatus } from "@/src/dataconnect-generated/react";
 import { dataConnectClient } from "@/lib/firebase";
-import { Trash2, Pause, Play, MapPin, Tag, Loader2 } from "lucide-react";
+import { Trash2, Pause, Play, MapPin, Tag, Loader2, Edit2 } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface ListingRowProps {
   property: {
@@ -101,6 +102,14 @@ export function ListingRow({ property }: ListingRowProps) {
       </div>
 
       <div className="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-200/50 dark:border-zinc-800/50">
+        <Link
+          href={`/listings/edit/${property.id}`}
+          aria-label="Edit Listing"
+          className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors"
+        >
+          <Edit2 className="w-4 h-4" />
+        </Link>
+
         <button
           onClick={handleToggleStatus}
           disabled={isToggling}

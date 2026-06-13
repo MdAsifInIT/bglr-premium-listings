@@ -1,123 +1,22 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/\d/, "Password must contain at least one numerical digit"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
+import { LoginForm } from "./components/login-form";
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
-  });
-
-  const onSubmit = async (data: LoginFormValues) => {
-    setError(null);
-    setLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
-      router.push("/");
-    } catch (err) {
-      const errorWithCode = err as Error & { code?: string };
-      if (errorWithCode.code === "auth/invalid-credential" || errorWithCode.code === "auth/user-not-found" || errorWithCode.code === "auth/wrong-password") {
-        setError("Invalid email or password. Please try again.");
-      } else {
-        setError(err instanceof Error ? err.message : "An unexpected error occurred during login.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="flex-1 flex items-center justify-center p-6 bg-stone-50 dark:bg-zinc-950">
-      <div className="bg-white dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 p-8 rounded-xl max-w-md w-full shadow-xl dark:shadow-2xl">
+    <main className="flex-1 flex flex-col items-center justify-center p-6 bg-stone-50 dark:bg-zinc-950 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-stone-200/50 via-stone-50 to-stone-50 dark:from-zinc-800/20 dark:via-zinc-950 dark:to-zinc-950 pointer-events-none"></div>
+      
+      <div className="w-full max-w-md bg-white/60 dark:bg-zinc-900/60 backdrop-blur-2xl border border-stone-200/50 dark:border-zinc-800/50 p-8 rounded-3xl shadow-xl z-10">
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Welcome Back to Namma Living</h2>
-          <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-2">Sign in to your premium listings account</p>
+          <h1 className="font-serif text-3xl font-semibold text-zinc-900 dark:text-zinc-100">Administrator Login</h1>
+          <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-2 font-light">Secure access to Namma Living moderation</p>
         </div>
 
-        {error && (
-          <div className="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm mb-6">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider mb-2" htmlFor="email">
-              Email Address
-            </label>
-            <Input
-              id="email"
-              type="email"
-              disabled={loading}
-              className="w-full bg-stone-50 dark:bg-zinc-950 border border-stone-200 dark:border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-600 dark:focus:ring-emerald-800 focus:border-transparent transition-all"
-              placeholder="you@example.com"
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider mb-2" htmlFor="password">
-              Password
-            </label>
-            <Input
-              id="password"
-              type="password"
-              disabled={loading}
-              className="w-full bg-stone-50 dark:bg-zinc-950 border border-stone-200 dark:border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-600 dark:focus:ring-emerald-800 focus:border-transparent transition-all"
-              placeholder="••••••••"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
-            )}
-          </div>
-
-          <Button
-            type="submit"
-            loading={loading}
-            className="w-full bg-emerald-700 dark:bg-emerald-800 hover:bg-emerald-600 dark:hover:bg-emerald-700 active:bg-emerald-800 dark:active:bg-emerald-900 text-white dark:text-zinc-100 font-semibold py-2.5 px-4 rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-          >
-            Sign In
-          </Button>
-        </form>
-
-        <p className="text-center text-zinc-600 dark:text-zinc-400 text-sm mt-6">
-          Don&apos;t have an account?{" "}
-          <Link href="/auth/signup" className="text-emerald-600 dark:text-emerald-500 hover:underline">
-            Register
-          </Link>
-        </p>
+        <Suspense fallback={<div className="flex justify-center p-4"><Loader2 className="w-6 h-6 animate-spin text-emerald-500" /></div>}>
+          <LoginForm />
+        </Suspense>
       </div>
-    </div>
+    </main>
   );
 }

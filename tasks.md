@@ -51,6 +51,7 @@ This file tracks the status of tasks for the bglr-premium-listings application.
 - [x] Create dashboard header with glassmorphic metrics cards (`dashboard-header.tsx`)
 - [x] Create listing row with pause/activate and delete controls (`listing-row.tsx`)
 - [x] Update manage listings page to fetch user listings and display dashboard (`app/listings/manage/page.tsx`)
+- [x] Create Edit Property Listing form (`app/listings/edit/[id]/page.tsx`) and link from row
 
 ## Phase 6: Shortlist & Saved Search Engine
 - [x] Implement heart FavoriteButton with optimistic UI toggles (`components/favorite-button.tsx`)

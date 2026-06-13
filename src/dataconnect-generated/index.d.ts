@@ -43,6 +43,24 @@ export interface CreatePropertyData {
   property_insert: Property_Key;
 }
 
+export interface UpdatePropertyData {
+  property_update?: Property_Key | null;
+}
+
+export interface UpdatePropertyVariables {
+  id: UUIDString;
+  title: string;
+  description: string;
+  price: number;
+  bhkCount: number;
+  propertyType: string;
+  listingType: string;
+  locality: string;
+  latitude: number;
+  longitude: number;
+  imageUrls: string[];
+}
+
 export interface CreatePropertyVariables {
   title: string;
   description: string;
@@ -260,6 +278,18 @@ export const createPropertyRef: CreatePropertyRef;
 
 export function createProperty(vars: CreatePropertyVariables): MutationPromise<CreatePropertyData, CreatePropertyVariables>;
 export function createProperty(dc: DataConnect, vars: CreatePropertyVariables): MutationPromise<CreatePropertyData, CreatePropertyVariables>;
+
+interface UpdatePropertyRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
+  operationName: string;
+}
+export const updatePropertyRef: UpdatePropertyRef;
+
+export function updateProperty(vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
+export function updateProperty(dc: DataConnect, vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
 
 interface ApprovePropertyRef {
   /* Allow users to create refs without passing in DataConnect */
