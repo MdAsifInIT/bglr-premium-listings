@@ -24,9 +24,10 @@ interface LeadFormProps {
   propertyId: string;
   propertyTitle: string;
   agentPhone: string;
+  persistLead?: boolean;
 }
 
-export function LeadForm({ propertyId, propertyTitle, agentPhone }: LeadFormProps) {
+export function LeadForm({ propertyId, propertyTitle, agentPhone, persistLead = true }: LeadFormProps) {
   const [loading, setLoading] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { mutateAsync: createLead } = useCreateLead(dataConnectClient);
@@ -48,13 +49,15 @@ export function LeadForm({ propertyId, propertyTitle, agentPhone }: LeadFormProp
   const onSubmit = async (data: LeadFormValues) => {
     setLoading(true);
     try {
-      await createLead({
-        propertyId,
-        agentPhone,
-        clientName: data.clientName,
-        clientPhone: data.clientPhone,
-        clientMessage: data.clientMessage || "",
-      });
+      if (persistLead) {
+        await createLead({
+          propertyId,
+          agentPhone,
+          clientName: data.clientName,
+          clientPhone: data.clientPhone,
+          clientMessage: data.clientMessage || "",
+        });
+      }
 
       const message = `${data.clientMessage || ""}\n\nMy name is ${data.clientName}. Let's connect.`;
       const encodedText = encodeURIComponent(message);

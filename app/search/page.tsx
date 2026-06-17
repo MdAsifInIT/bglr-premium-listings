@@ -7,6 +7,8 @@ import dynamic from "next/dynamic";
 const MapWrapper = dynamic(() => import("@/components/map/map-wrapper").then(m => m.MapWrapper), { ssr: false });
 import { PropertyCard, PropertyData } from "@/components/property-card";
 import { Loader2 } from "lucide-react";
+import { getSampleListingsWithinBounds } from "@/lib/sample-listings";
+import type { PropertyMarker } from "@/components/map/map-wrapper";
 
 import { SaveSearchButton } from "./components/save-search-button";
 import { SearchStatusBar } from "./components/search-status-bar";
@@ -25,7 +27,8 @@ export default function SearchPage() {
   });
 
   const { data, isLoading, error } = useListApprovedProperties(dataConnectClient, bounds);
-  const properties = data?.properties || [];
+  const databaseProperties = data?.properties || [];
+  const properties = databaseProperties.length > 0 ? databaseProperties : getSampleListingsWithinBounds(bounds);
 
   return (
     <div className="flex-1 flex flex-col md:flex-row h-[calc(100vh-80px)] overflow-hidden bg-stone-50 dark:bg-zinc-950">
@@ -69,7 +72,7 @@ export default function SearchPage() {
 
       {/* Right panel: Map */}
       <div className="w-full md:w-1/2 h-[50vh] md:h-full border-t md:border-t-0 md:border-l border-stone-200 dark:border-zinc-900 relative">
-        <MapWrapper properties={properties as any[]} onBoundsChange={setBounds} />
+        <MapWrapper properties={properties as PropertyMarker[]} onBoundsChange={setBounds} />
       </div>
     </div>
   );

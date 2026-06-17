@@ -1,4 +1,4 @@
-import { createUserRef, createPropertyRef, updatePropertyRef, approvePropertyRef, deletePropertyRef, updatePropertyStatusRef, createFavoriteRef, deleteFavoriteRef, createSavedSearchRef, createLeadRef, rejectPropertyRef, listApprovedPropertiesRef, getPropertyByIdRef, listPendingPropertiesRef, listUserPropertiesRef, listUserFavoritesRef, listUserSavedSearchesRef, connectorConfig } from '../../esm/index.esm.js';
+import { createUserRef, createPropertyRef, approvePropertyRef, deletePropertyRef, updatePropertyStatusRef, createFavoriteRef, deleteFavoriteRef, createSavedSearchRef, createLeadRef, rejectPropertyRef, updatePropertyRef, listApprovedPropertiesRef, getPropertyByIdRef, getCurrentUserRef, listPendingPropertiesRef, listUserPropertiesRef, listUserFavoritesRef, listUserSavedSearchesRef, connectorConfig } from '../../esm/index.esm.js';
 import { validateArgs, CallerSdkTypeEnum } from 'firebase/data-connect';
 import { useDataConnectQuery, useDataConnectMutation, validateReactArgs } from '@tanstack-query-firebase/react/data-connect';
 
@@ -14,14 +14,6 @@ export function useCreateProperty(dcOrOptions, options) {
   const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
   function refFactory(vars) {
     return createPropertyRef(dcInstance, vars);
-  }
-  return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useUpdateProperty(dcOrOptions, options) {
-  const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
-  function refFactory(vars) {
-    return updatePropertyRef(dcInstance, vars);
   }
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
@@ -90,6 +82,14 @@ export function useRejectProperty(dcOrOptions, options) {
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 
+export function useUpdateProperty(dcOrOptions, options) {
+  const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
+  function refFactory(vars) {
+    return updatePropertyRef(dcInstance, vars);
+  }
+  return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
 
 export function useListApprovedProperties(dcOrVars, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
@@ -100,6 +100,12 @@ export function useListApprovedProperties(dcOrVars, varsOrOptions, options) {
 export function useGetPropertyById(dcOrVars, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   const ref = getPropertyByIdRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useGetCurrentUser(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = getCurrentUserRef(dcInstance);
   return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 

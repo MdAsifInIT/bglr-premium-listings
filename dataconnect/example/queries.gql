@@ -47,8 +47,24 @@ query GetPropertyById($id: UUID!) @auth(level: PUBLIC, insecureReason: "Public a
   }
 }
 
+# Fetch the signed-in profile for authorization-aware client UI
+query GetCurrentUser @auth(level: USER) {
+  user(key: { id_expr: "auth.uid" }) {
+    id
+    email
+    fullName
+    phoneNumber
+    isAdmin
+  }
+}
+
 # Fetch all unapproved property listings for the admin moderation queue
 query ListPendingProperties @auth(level: USER) {
+  currentUser: user(key: { id_expr: "auth.uid" })
+    @redact
+    @check(expr: "this != null", message: "Admin profile not found") {
+    isAdmin @check(expr: "this == true", message: "Admin privileges required")
+  }
   properties(where: { isApproved: { eq: false } }) {
     id
     title
@@ -56,6 +72,7 @@ query ListPendingProperties @auth(level: USER) {
     locality
     propertyType
     listingType
+    imageUrls
     owner {
       fullName
     }

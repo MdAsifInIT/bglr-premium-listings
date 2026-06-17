@@ -5,7 +5,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
 
 export function LoginForm() {
   const router = useRouter();
@@ -25,8 +24,8 @@ export function LoginForm() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push(redirectUrl);
-    } catch (err: any) {
-      setError(err.message || "Invalid credentials. Please try again.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Invalid credentials. Please try again.");
     } finally {
       setLoading(false);
     }

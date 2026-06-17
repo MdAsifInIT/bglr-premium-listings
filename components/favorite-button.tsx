@@ -9,9 +9,11 @@ import { motion } from "framer-motion";
 
 interface FavoriteButtonProps {
   propertyId: string;
+  disabled?: boolean;
+  disabledReason?: string;
 }
 
-export function FavoriteButton({ propertyId }: FavoriteButtonProps) {
+export function FavoriteButton({ propertyId, disabled = false, disabledReason }: FavoriteButtonProps) {
   const router = useRouter();
   const [optimisticFavorite, setOptimisticFavorite] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(false);
@@ -30,6 +32,8 @@ export function FavoriteButton({ propertyId }: FavoriteButtonProps) {
   const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (disabled) return;
 
     if (!auth.currentUser) {
       router.push(`/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`);
@@ -60,9 +64,10 @@ export function FavoriteButton({ propertyId }: FavoriteButtonProps) {
       whileTap={{ scale: 0.9 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       onClick={handleToggle}
-      disabled={loading}
-      aria-label={isFavorited ? "Remove from shortlist" : "Save to shortlist"}
-      className="w-10 h-10 rounded-full flex items-center justify-center bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-white/60 dark:border-zinc-800/60 shadow-md hover:bg-white dark:hover:bg-zinc-900 transition-colors min-h-[44px] min-w-[44px]"
+      disabled={loading || disabled}
+      aria-label={disabledReason || (isFavorited ? "Remove from shortlist" : "Save to shortlist")}
+      title={disabledReason}
+      className="w-10 h-10 rounded-full flex items-center justify-center bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-white/60 dark:border-zinc-800/60 shadow-md hover:bg-white dark:hover:bg-zinc-900 transition-colors min-h-[44px] min-w-[44px] disabled:cursor-not-allowed disabled:opacity-70"
     >
       {loading ? (
         <Loader2 className="w-4 h-4 animate-spin text-zinc-500" />

@@ -1,4 +1,4 @@
-import { CreateUserData, CreateUserVariables, CreatePropertyData, CreatePropertyVariables, UpdatePropertyData, UpdatePropertyVariables, ApprovePropertyData, ApprovePropertyVariables, DeletePropertyData, DeletePropertyVariables, UpdatePropertyStatusData, UpdatePropertyStatusVariables, CreateFavoriteData, CreateFavoriteVariables, DeleteFavoriteData, DeleteFavoriteVariables, CreateSavedSearchData, CreateSavedSearchVariables, CreateLeadData, CreateLeadVariables, RejectPropertyData, RejectPropertyVariables, ListApprovedPropertiesData, ListApprovedPropertiesVariables, GetPropertyByIdData, GetPropertyByIdVariables, ListPendingPropertiesData, ListUserPropertiesData, ListUserFavoritesData, ListUserSavedSearchesData } from '../';
+import { CreateUserData, CreateUserVariables, CreatePropertyData, CreatePropertyVariables, ApprovePropertyData, ApprovePropertyVariables, DeletePropertyData, DeletePropertyVariables, UpdatePropertyStatusData, UpdatePropertyStatusVariables, CreateFavoriteData, CreateFavoriteVariables, DeleteFavoriteData, DeleteFavoriteVariables, CreateSavedSearchData, CreateSavedSearchVariables, CreateLeadData, CreateLeadVariables, RejectPropertyData, RejectPropertyVariables, UpdatePropertyData, UpdatePropertyVariables, ListApprovedPropertiesData, ListApprovedPropertiesVariables, GetPropertyByIdData, GetPropertyByIdVariables, GetCurrentUserData, ListPendingPropertiesData, ListUserPropertiesData, ListUserFavoritesData, ListUserSavedSearchesData } from '../';
 import { UseDataConnectQueryResult, useDataConnectQueryOptions, UseDataConnectMutationResult, useDataConnectMutationOptions} from '@tanstack-query-firebase/react/data-connect';
 import { UseQueryResult, UseMutationResult} from '@tanstack/react-query';
 import { DataConnect } from 'firebase/data-connect';
@@ -10,9 +10,6 @@ export function useCreateUser(dc: DataConnect, options?: useDataConnectMutationO
 
 export function useCreateProperty(options?: useDataConnectMutationOptions<CreatePropertyData, FirebaseError, CreatePropertyVariables>): UseDataConnectMutationResult<CreatePropertyData, CreatePropertyVariables>;
 export function useCreateProperty(dc: DataConnect, options?: useDataConnectMutationOptions<CreatePropertyData, FirebaseError, CreatePropertyVariables>): UseDataConnectMutationResult<CreatePropertyData, CreatePropertyVariables>;
-
-export function useUpdateProperty(options?: useDataConnectMutationOptions<UpdatePropertyData, FirebaseError, UpdatePropertyVariables>): UseDataConnectMutationResult<UpdatePropertyData, UpdatePropertyVariables>;
-export function useUpdateProperty(dc: DataConnect, options?: useDataConnectMutationOptions<UpdatePropertyData, FirebaseError, UpdatePropertyVariables>): UseDataConnectMutationResult<UpdatePropertyData, UpdatePropertyVariables>;
 
 export function useApproveProperty(options?: useDataConnectMutationOptions<ApprovePropertyData, FirebaseError, ApprovePropertyVariables>): UseDataConnectMutationResult<ApprovePropertyData, ApprovePropertyVariables>;
 export function useApproveProperty(dc: DataConnect, options?: useDataConnectMutationOptions<ApprovePropertyData, FirebaseError, ApprovePropertyVariables>): UseDataConnectMutationResult<ApprovePropertyData, ApprovePropertyVariables>;
@@ -38,11 +35,17 @@ export function useCreateLead(dc: DataConnect, options?: useDataConnectMutationO
 export function useRejectProperty(options?: useDataConnectMutationOptions<RejectPropertyData, FirebaseError, RejectPropertyVariables>): UseDataConnectMutationResult<RejectPropertyData, RejectPropertyVariables>;
 export function useRejectProperty(dc: DataConnect, options?: useDataConnectMutationOptions<RejectPropertyData, FirebaseError, RejectPropertyVariables>): UseDataConnectMutationResult<RejectPropertyData, RejectPropertyVariables>;
 
+export function useUpdateProperty(options?: useDataConnectMutationOptions<UpdatePropertyData, FirebaseError, UpdatePropertyVariables>): UseDataConnectMutationResult<UpdatePropertyData, UpdatePropertyVariables>;
+export function useUpdateProperty(dc: DataConnect, options?: useDataConnectMutationOptions<UpdatePropertyData, FirebaseError, UpdatePropertyVariables>): UseDataConnectMutationResult<UpdatePropertyData, UpdatePropertyVariables>;
+
 export function useListApprovedProperties(vars: ListApprovedPropertiesVariables, options?: useDataConnectQueryOptions<ListApprovedPropertiesData>): UseDataConnectQueryResult<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
 export function useListApprovedProperties(dc: DataConnect, vars: ListApprovedPropertiesVariables, options?: useDataConnectQueryOptions<ListApprovedPropertiesData>): UseDataConnectQueryResult<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
 
 export function useGetPropertyById(vars: GetPropertyByIdVariables, options?: useDataConnectQueryOptions<GetPropertyByIdData>): UseDataConnectQueryResult<GetPropertyByIdData, GetPropertyByIdVariables>;
 export function useGetPropertyById(dc: DataConnect, vars: GetPropertyByIdVariables, options?: useDataConnectQueryOptions<GetPropertyByIdData>): UseDataConnectQueryResult<GetPropertyByIdData, GetPropertyByIdVariables>;
+
+export function useGetCurrentUser(options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, undefined>;
+export function useGetCurrentUser(dc: DataConnect, options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, undefined>;
 
 export function useListPendingProperties(options?: useDataConnectQueryOptions<ListPendingPropertiesData>): UseDataConnectQueryResult<ListPendingPropertiesData, undefined>;
 export function useListPendingProperties(dc: DataConnect, options?: useDataConnectQueryOptions<ListPendingPropertiesData>): UseDataConnectQueryResult<ListPendingPropertiesData, undefined>;

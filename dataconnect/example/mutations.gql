@@ -39,10 +39,16 @@ mutation CreateProperty(
 }
 
 # Admin: flip a property's approval state to true
-mutation ApproveProperty($id: UUID!) @auth(level: USER) {
+mutation ApproveProperty($id: UUID!) @auth(level: USER) @transaction {
+  query @redact {
+    user(key: { id_expr: "auth.uid" })
+      @check(expr: "this != null", message: "Admin profile not found") {
+      isAdmin @check(expr: "this == true", message: "Admin privileges required")
+    }
+  }
   property_update(id: $id, data: {
     isApproved: true
-  })
+  }) @check(expr: "this != null", message: "Property not found")
 }
 
 # Delete a property owned by the current user
@@ -102,8 +108,14 @@ mutation CreateLead(
 }
 
 # Admin: reject and delete a property listing
-mutation RejectProperty($id: UUID!) @auth(level: USER) {
-  property_delete(id: $id)
+mutation RejectProperty($id: UUID!) @auth(level: USER) @transaction {
+  query @redact {
+    user(key: { id_expr: "auth.uid" })
+      @check(expr: "this != null", message: "Admin profile not found") {
+      isAdmin @check(expr: "this == true", message: "Admin privileges required")
+    }
+  }
+  property_delete(id: $id) @check(expr: "this != null", message: "Property not found")
 }
 
 # Update all fields of an existing property listing (for owner edits)

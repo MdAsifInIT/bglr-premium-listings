@@ -12,6 +12,7 @@ This README will guide you through the process of using the generated JavaScript
 - [**Queries**](#queries)
   - [*ListApprovedProperties*](#listapprovedproperties)
   - [*GetPropertyById*](#getpropertybyid)
+  - [*GetCurrentUser*](#getcurrentuser)
   - [*ListPendingProperties*](#listpendingproperties)
   - [*ListUserProperties*](#listuserproperties)
   - [*ListUserFavorites*](#listuserfavorites)
@@ -27,6 +28,7 @@ This README will guide you through the process of using the generated JavaScript
   - [*CreateSavedSearch*](#createsavedsearch)
   - [*CreateLead*](#createlead)
   - [*RejectProperty*](#rejectproperty)
+  - [*UpdateProperty*](#updateproperty)
 
 # Accessing the connector
 A connector is a collection of Queries and Mutations. One SDK is generated for each connector - this SDK is generated for the connector `example`. You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
@@ -328,6 +330,103 @@ executeQuery(ref).then((response) => {
 });
 ```
 
+## GetCurrentUser
+You can execute the `GetCurrentUser` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+getCurrentUser(options?: ExecuteQueryOptions): QueryPromise<GetCurrentUserData, undefined>;
+
+interface GetCurrentUserRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetCurrentUserData, undefined>;
+}
+export const getCurrentUserRef: GetCurrentUserRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+getCurrentUser(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<GetCurrentUserData, undefined>;
+
+interface GetCurrentUserRef {
+  ...
+  (dc: DataConnect): QueryRef<GetCurrentUserData, undefined>;
+}
+export const getCurrentUserRef: GetCurrentUserRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getCurrentUserRef:
+```typescript
+const name = getCurrentUserRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `GetCurrentUser` query has no variables.
+### Return Type
+Recall that executing the `GetCurrentUser` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `GetCurrentUserData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface GetCurrentUserData {
+  user?: {
+    id: string;
+    email: string;
+    fullName: string;
+    phoneNumber: string;
+    isAdmin: boolean;
+  } & User_Key;
+}
+```
+### Using `GetCurrentUser`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, getCurrentUser } from '@dataconnect/generated';
+
+
+// Call the `getCurrentUser()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await getCurrentUser();
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await getCurrentUser(dataConnect);
+
+console.log(data.user);
+
+// Or, you can use the `Promise` API.
+getCurrentUser().then((response) => {
+  const data = response.data;
+  console.log(data.user);
+});
+```
+
+### Using `GetCurrentUser`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, getCurrentUserRef } from '@dataconnect/generated';
+
+
+// Call the `getCurrentUserRef()` function to get a reference to the query.
+const ref = getCurrentUserRef();
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = getCurrentUserRef(dataConnect);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.user);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.user);
+});
+```
+
 ## ListPendingProperties
 You can execute the `ListPendingProperties` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
@@ -372,6 +471,7 @@ export interface ListPendingPropertiesData {
     locality: string;
     propertyType: string;
     listingType: string;
+    imageUrls: string[];
     owner: {
       fullName: string;
     };
@@ -1880,6 +1980,145 @@ console.log(data.property_delete);
 executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.property_delete);
+});
+```
+
+## UpdateProperty
+You can execute the `UpdateProperty` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+updateProperty(vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
+
+interface UpdatePropertyRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
+}
+export const updatePropertyRef: UpdatePropertyRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+updateProperty(dc: DataConnect, vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
+
+interface UpdatePropertyRef {
+  ...
+  (dc: DataConnect, vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
+}
+export const updatePropertyRef: UpdatePropertyRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the updatePropertyRef:
+```typescript
+const name = updatePropertyRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `UpdateProperty` mutation requires an argument of type `UpdatePropertyVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface UpdatePropertyVariables {
+  id: UUIDString;
+  title: string;
+  description: string;
+  price: number;
+  bhkCount: number;
+  propertyType: string;
+  listingType: string;
+  locality: string;
+  latitude: number;
+  longitude: number;
+  imageUrls: string[];
+}
+```
+### Return Type
+Recall that executing the `UpdateProperty` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `UpdatePropertyData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface UpdatePropertyData {
+  property_update?: Property_Key | null;
+}
+```
+### Using `UpdateProperty`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, updateProperty, UpdatePropertyVariables } from '@dataconnect/generated';
+
+// The `UpdateProperty` mutation requires an argument of type `UpdatePropertyVariables`:
+const updatePropertyVars: UpdatePropertyVariables = {
+  id: ..., 
+  title: ..., 
+  description: ..., 
+  price: ..., 
+  bhkCount: ..., 
+  propertyType: ..., 
+  listingType: ..., 
+  locality: ..., 
+  latitude: ..., 
+  longitude: ..., 
+  imageUrls: ..., 
+};
+
+// Call the `updateProperty()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await updateProperty(updatePropertyVars);
+// Variables can be defined inline as well.
+const { data } = await updateProperty({ id: ..., title: ..., description: ..., price: ..., bhkCount: ..., propertyType: ..., listingType: ..., locality: ..., latitude: ..., longitude: ..., imageUrls: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await updateProperty(dataConnect, updatePropertyVars);
+
+console.log(data.property_update);
+
+// Or, you can use the `Promise` API.
+updateProperty(updatePropertyVars).then((response) => {
+  const data = response.data;
+  console.log(data.property_update);
+});
+```
+
+### Using `UpdateProperty`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, updatePropertyRef, UpdatePropertyVariables } from '@dataconnect/generated';
+
+// The `UpdateProperty` mutation requires an argument of type `UpdatePropertyVariables`:
+const updatePropertyVars: UpdatePropertyVariables = {
+  id: ..., 
+  title: ..., 
+  description: ..., 
+  price: ..., 
+  bhkCount: ..., 
+  propertyType: ..., 
+  listingType: ..., 
+  locality: ..., 
+  latitude: ..., 
+  longitude: ..., 
+  imageUrls: ..., 
+};
+
+// Call the `updatePropertyRef()` function to get a reference to the mutation.
+const ref = updatePropertyRef(updatePropertyVars);
+// Variables can be defined inline as well.
+const ref = updatePropertyRef({ id: ..., title: ..., description: ..., price: ..., bhkCount: ..., propertyType: ..., listingType: ..., locality: ..., latitude: ..., longitude: ..., imageUrls: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = updatePropertyRef(dataConnect, updatePropertyVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.property_update);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.property_update);
 });
 ```
 

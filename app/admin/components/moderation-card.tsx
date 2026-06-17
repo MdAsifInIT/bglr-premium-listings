@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { useApproveProperty, useRejectProperty } from "@/src/dataconnect-generated/react";
 import { dataConnectClient } from "@/lib/firebase";
-import { MapPin, Tag, User, Loader2, Check, X } from "lucide-react";
+import { MapPin, Tag, User, Loader2, Check, X, ImageOff } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface ModerationCardProps {
@@ -50,7 +50,7 @@ export function ModerationCard({ property }: ModerationCardProps) {
     }
   };
 
-  const imageSrc = property.imageUrls?.[0] || "/placeholder.jpg";
+  const imageSrc = property.imageUrls?.[0];
   const isLoading = isApproving || isRejecting;
 
   return (
@@ -62,13 +62,20 @@ export function ModerationCard({ property }: ModerationCardProps) {
       className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-stone-200/60 dark:border-zinc-800/60 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row gap-5 shadow-sm"
     >
       <div className="relative w-full sm:w-32 h-32 sm:h-auto rounded-xl overflow-hidden shrink-0 bg-stone-100 dark:bg-zinc-800">
-        <Image
-          src={imageSrc}
-          alt={property.title}
-          fill
-          sizes="(max-width: 640px) 100vw, 128px"
-          className="object-cover"
-        />
+        {imageSrc ? (
+          <Image
+            src={imageSrc}
+            alt={property.title}
+            fill
+            sizes="(max-width: 640px) 100vw, 128px"
+            className="object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-600">
+            <ImageOff className="w-6 h-6 mb-1" />
+            <span className="text-[10px] font-medium">No image</span>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 min-w-0 flex flex-col justify-center">

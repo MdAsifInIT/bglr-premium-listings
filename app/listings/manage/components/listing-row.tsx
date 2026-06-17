@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteProperty, useUpdatePropertyStatus } from "@/src/dataconnect-generated/react";
 import { dataConnectClient } from "@/lib/firebase";
-import { Trash2, Pause, Play, MapPin, Tag, Loader2, Edit2 } from "lucide-react";
+import { Trash2, Pause, Play, MapPin, Tag, Loader2, Edit2, ImageOff } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -49,7 +49,7 @@ export function ListingRow({ property }: ListingRowProps) {
     }
   };
 
-  const imageSrc = property.imageUrls?.[0] || "/placeholder.jpg";
+  const imageSrc = property.imageUrls?.[0];
 
   return (
     <motion.div
@@ -60,13 +60,20 @@ export function ListingRow({ property }: ListingRowProps) {
       className="p-4 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-stone-200/50 dark:border-zinc-800/50 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-sm"
     >
       <div className="relative w-full sm:w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-stone-100 dark:bg-zinc-800">
-        <Image
-          src={imageSrc}
-          alt={property.title}
-          fill
-          sizes="(max-width: 640px) 100vw, 96px"
-          className="object-cover"
-        />
+        {imageSrc ? (
+          <Image
+            src={imageSrc}
+            alt={property.title}
+            fill
+            sizes="(max-width: 640px) 100vw, 96px"
+            className="object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-600">
+            <ImageOff className="w-5 h-5 mb-1" />
+            <span className="text-[10px] font-medium">No image</span>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 min-w-0">

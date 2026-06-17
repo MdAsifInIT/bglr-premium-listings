@@ -43,24 +43,6 @@ export interface CreatePropertyData {
   property_insert: Property_Key;
 }
 
-export interface UpdatePropertyData {
-  property_update?: Property_Key | null;
-}
-
-export interface UpdatePropertyVariables {
-  id: UUIDString;
-  title: string;
-  description: string;
-  price: number;
-  bhkCount: number;
-  propertyType: string;
-  listingType: string;
-  locality: string;
-  latitude: number;
-  longitude: number;
-  imageUrls: string[];
-}
-
 export interface CreatePropertyVariables {
   title: string;
   description: string;
@@ -113,6 +95,16 @@ export interface Favorite_Key {
   userId: string;
   propertyId: UUIDString;
   __typename?: 'Favorite_Key';
+}
+
+export interface GetCurrentUserData {
+  user?: {
+    id: string;
+    email: string;
+    fullName: string;
+    phoneNumber: string;
+    isAdmin: boolean;
+  } & User_Key;
 }
 
 export interface GetPropertyByIdData {
@@ -175,6 +167,7 @@ export interface ListPendingPropertiesData {
     locality: string;
     propertyType: string;
     listingType: string;
+    imageUrls: string[];
     owner: {
       fullName: string;
     };
@@ -241,6 +234,10 @@ export interface SavedSearch_Key {
   __typename?: 'SavedSearch_Key';
 }
 
+export interface UpdatePropertyData {
+  property_update?: Property_Key | null;
+}
+
 export interface UpdatePropertyStatusData {
   property_update?: Property_Key | null;
 }
@@ -248,6 +245,20 @@ export interface UpdatePropertyStatusData {
 export interface UpdatePropertyStatusVariables {
   id: UUIDString;
   isApproved: boolean;
+}
+
+export interface UpdatePropertyVariables {
+  id: UUIDString;
+  title: string;
+  description: string;
+  price: number;
+  bhkCount: number;
+  propertyType: string;
+  listingType: string;
+  locality: string;
+  latitude: number;
+  longitude: number;
+  imageUrls: string[];
 }
 
 export interface User_Key {
@@ -278,18 +289,6 @@ export const createPropertyRef: CreatePropertyRef;
 
 export function createProperty(vars: CreatePropertyVariables): MutationPromise<CreatePropertyData, CreatePropertyVariables>;
 export function createProperty(dc: DataConnect, vars: CreatePropertyVariables): MutationPromise<CreatePropertyData, CreatePropertyVariables>;
-
-interface UpdatePropertyRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
-  operationName: string;
-}
-export const updatePropertyRef: UpdatePropertyRef;
-
-export function updateProperty(vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
-export function updateProperty(dc: DataConnect, vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
 
 interface ApprovePropertyRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -387,6 +386,18 @@ export const rejectPropertyRef: RejectPropertyRef;
 export function rejectProperty(vars: RejectPropertyVariables): MutationPromise<RejectPropertyData, RejectPropertyVariables>;
 export function rejectProperty(dc: DataConnect, vars: RejectPropertyVariables): MutationPromise<RejectPropertyData, RejectPropertyVariables>;
 
+interface UpdatePropertyRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: UpdatePropertyVariables): MutationRef<UpdatePropertyData, UpdatePropertyVariables>;
+  operationName: string;
+}
+export const updatePropertyRef: UpdatePropertyRef;
+
+export function updateProperty(vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
+export function updateProperty(dc: DataConnect, vars: UpdatePropertyVariables): MutationPromise<UpdatePropertyData, UpdatePropertyVariables>;
+
 interface ListApprovedPropertiesRef {
   /* Allow users to create refs without passing in DataConnect */
   (vars: ListApprovedPropertiesVariables): QueryRef<ListApprovedPropertiesData, ListApprovedPropertiesVariables>;
@@ -410,6 +421,18 @@ export const getPropertyByIdRef: GetPropertyByIdRef;
 
 export function getPropertyById(vars: GetPropertyByIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetPropertyByIdData, GetPropertyByIdVariables>;
 export function getPropertyById(dc: DataConnect, vars: GetPropertyByIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetPropertyByIdData, GetPropertyByIdVariables>;
+
+interface GetCurrentUserRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetCurrentUserData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<GetCurrentUserData, undefined>;
+  operationName: string;
+}
+export const getCurrentUserRef: GetCurrentUserRef;
+
+export function getCurrentUser(options?: ExecuteQueryOptions): QueryPromise<GetCurrentUserData, undefined>;
+export function getCurrentUser(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<GetCurrentUserData, undefined>;
 
 interface ListPendingPropertiesRef {
   /* Allow users to create refs without passing in DataConnect */

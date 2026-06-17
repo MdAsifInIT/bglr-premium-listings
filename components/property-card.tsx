@@ -16,6 +16,7 @@ export interface PropertyData {
   bhkCount: number;
   imageUrls: string[];
   listingType: string;
+  isDemo?: boolean;
 }
 
 export function PropertyCard({ property }: { property: PropertyData }) {
@@ -78,7 +79,11 @@ export function PropertyCard({ property }: { property: PropertyData }) {
           </div>
 
           <div className="absolute top-3 right-3 z-20">
-            <FavoriteButton propertyId={property.id} />
+            <FavoriteButton
+              propertyId={property.id}
+              disabled={property.isDemo}
+              disabledReason={property.isDemo ? "Demo listings cannot be shortlisted" : undefined}
+            />
           </div>
 
           {property.imageUrls.length > 1 && !imgError && (

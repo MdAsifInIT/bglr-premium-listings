@@ -1,4 +1,4 @@
-const { createUserRef, createPropertyRef, updatePropertyRef, approvePropertyRef, deletePropertyRef, updatePropertyStatusRef, createFavoriteRef, deleteFavoriteRef, createSavedSearchRef, createLeadRef, rejectPropertyRef, listApprovedPropertiesRef, getPropertyByIdRef, listPendingPropertiesRef, listUserPropertiesRef, listUserFavoritesRef, listUserSavedSearchesRef, connectorConfig } = require('../index.cjs.js');
+const { createUserRef, createPropertyRef, approvePropertyRef, deletePropertyRef, updatePropertyStatusRef, createFavoriteRef, deleteFavoriteRef, createSavedSearchRef, createLeadRef, rejectPropertyRef, updatePropertyRef, listApprovedPropertiesRef, getPropertyByIdRef, getCurrentUserRef, listPendingPropertiesRef, listUserPropertiesRef, listUserFavoritesRef, listUserSavedSearchesRef, connectorConfig } = require('../index.cjs.js');
 const { validateArgs, CallerSdkTypeEnum } = require('firebase/data-connect');
 const { useDataConnectQuery, useDataConnectMutation, validateReactArgs } = require('@tanstack-query-firebase/react/data-connect');
 
@@ -14,14 +14,6 @@ exports.useCreateProperty = function useCreateProperty(dcOrOptions, options) {
   const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
   function refFactory(vars) {
     return createPropertyRef(dcInstance, vars);
-  }
-  return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-exports.useUpdateProperty = function useUpdateProperty(dcOrOptions, options) {
-  const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
-  function refFactory(vars) {
-    return updatePropertyRef(dcInstance, vars);
   }
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
@@ -90,6 +82,14 @@ exports.useRejectProperty = function useRejectProperty(dcOrOptions, options) {
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 
+exports.useUpdateProperty = function useUpdateProperty(dcOrOptions, options) {
+  const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
+  function refFactory(vars) {
+    return updatePropertyRef(dcInstance, vars);
+  }
+  return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
 
 exports.useListApprovedProperties = function useListApprovedProperties(dcOrVars, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
@@ -100,6 +100,12 @@ exports.useListApprovedProperties = function useListApprovedProperties(dcOrVars,
 exports.useGetPropertyById = function useGetPropertyById(dcOrVars, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   const ref = getPropertyByIdRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+exports.useGetCurrentUser = function useGetCurrentUser(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = getCurrentUserRef(dcInstance);
   return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 

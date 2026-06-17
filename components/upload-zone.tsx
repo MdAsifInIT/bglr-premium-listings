@@ -9,12 +9,28 @@ import Image from "next/image";
 interface UploadZoneProps {
   value: string[];
   onChange: (urls: string[]) => void;
+  disabled?: boolean;
+  onError?: (message: string) => void;
+  maxFiles?: number;
+  maxFileSizeMb?: number;
 }
 
-export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
+export const UploadZone: React.FC<UploadZoneProps> = ({
+  value,
+  onChange,
+  disabled = false,
+  onError,
+  maxFiles = 8,
+  maxFileSizeMb = 8,
+}) => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const reportError = (message: string) => {
+    setError(message);
+    onError?.(message);
+  };
 
   const compressImage = (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {
@@ -50,18 +66,42 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
   };
 
   const handleFiles = async (files: FileList) => {
+    if (disabled || uploading) return;
+
     const uid = auth.currentUser?.uid;
-    if (!uid) return setError("You must be signed in to upload images.");
+    if (!uid) return reportError("You must be signed in to upload images.");
+
+    const incomingFiles = Array.from(files);
+    const remainingSlots = maxFiles - value.length;
+
+    if (remainingSlots <= 0) {
+      reportError(`You can upload up to ${maxFiles} images.`);
+      return;
+    }
+
+    const validFiles = incomingFiles
+      .filter((file) => file.type.startsWith("image/"))
+      .filter((file) => file.size <= maxFileSizeMb * 1024 * 1024)
+      .slice(0, remainingSlots);
+
+    if (validFiles.length === 0) {
+      reportError(`Select JPG, PNG, or WebP images under ${maxFileSizeMb} MB.`);
+      return;
+    }
+
+    if (validFiles.length < incomingFiles.length) {
+      reportError(`Some files were skipped. Upload up to ${maxFiles} images, each under ${maxFileSizeMb} MB.`);
+    }
+
     setUploading(true);
     setError(null);
     const uploadedUrls: string[] = [];
 
     try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (!file.type.startsWith("image/")) continue;
+      for (const file of validFiles) {
         const compressedBlob = await compressImage(file);
-        const filename = `${Date.now()}-${file.name.replace(/\.[^/.]+$/, "")}.webp`;
+        const safeName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9-_]/g, "-").slice(0, 80);
+        const filename = `${Date.now()}-${crypto.randomUUID()}-${safeName}.webp`;
         const storageRef = ref(storage, `properties/${uid}/${filename}`);
         await uploadBytes(storageRef, compressedBlob);
         const url = await getDownloadURL(storageRef);
@@ -69,9 +109,10 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
       }
       onChange([...value, ...uploadedUrls]);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to upload one or more images.");
+      reportError(error instanceof Error ? error.message : "Failed to upload one or more images.");
     } finally {
       setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -84,13 +125,15 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
           if (e.dataTransfer.files) handleFiles(e.dataTransfer.files);
         }}
         onClick={() => fileInputRef.current?.click()}
-        className="w-full bg-stone-50 dark:bg-zinc-950 border-2 border-dashed border-stone-300 dark:border-zinc-800 hover:border-emerald-600 dark:hover:border-emerald-800 rounded-xl p-8 transition-colors flex flex-col items-center justify-center cursor-pointer text-center min-h-[160px]"
+        className="w-full bg-stone-50 dark:bg-zinc-950 border-2 border-dashed border-stone-300 dark:border-zinc-800 hover:border-emerald-600 dark:hover:border-emerald-800 rounded-xl p-8 transition-colors flex flex-col items-center justify-center cursor-pointer text-center min-h-[160px] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-60"
+        data-disabled={disabled || uploading}
       >
         <input
           type="file"
           ref={fileInputRef}
           multiple
           accept="image/*"
+          disabled={disabled || uploading}
           className="hidden"
           onChange={(e) => {
             if (e.target.files) handleFiles(e.target.files);
@@ -105,7 +148,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
           <div className="flex flex-col items-center gap-2 text-zinc-500 dark:text-zinc-400">
             <Upload className="h-8 w-8 text-zinc-400 dark:text-zinc-500 mb-1" />
             <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Drag & drop luxury property images</p>
-            <p className="text-xs text-zinc-500">Supports JPG, PNG (automatically WebP compressed)</p>
+            <p className="text-xs text-zinc-500">Supports JPG, PNG, WebP under {maxFileSizeMb} MB</p>
           </div>
         )}
       </div>
@@ -120,9 +163,11 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ value, onChange }) => {
                 aria-label="Remove image"
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (disabled || uploading) return;
                   onChange(value.filter((_, i) => i !== index));
                 }}
-                className="absolute top-1 right-1 bg-red-100 dark:bg-red-950/80 hover:bg-red-200 dark:hover:bg-red-900 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-200 flex items-center justify-center rounded-full cursor-pointer transition-colors min-h-[44px] min-w-[44px]"
+                disabled={disabled || uploading}
+                className="absolute top-1 right-1 bg-red-100 dark:bg-red-950/80 hover:bg-red-200 dark:hover:bg-red-900 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-200 flex items-center justify-center rounded-full cursor-pointer transition-colors min-h-[44px] min-w-[44px] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <X className="h-3.5 w-3.5" />
               </button>

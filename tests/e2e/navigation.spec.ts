@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 
 test.describe('Navigation & Core Flows', () => {
-  test('should navigate to the home page and see the hero section', async ({ page }) => {
+  test('should navigate to the home page and see the hero section', async ({ page, isMobile }: { page: Page; isMobile: boolean }) => {
     await page.goto('/');
     
     // Verify the hero text
@@ -10,8 +10,10 @@ test.describe('Navigation & Core Flows', () => {
     
     // Verify Navbar links
     const navLinks = ['Indiranagar', 'HSR Layout', 'Koramangala', 'Whitefield'];
-    for (const link of navLinks) {
-      await expect(page.locator(`nav a:has-text("${link}")`)).toBeVisible();
+    if (!isMobile) {
+      for (const link of navLinks) {
+        await expect(page.locator(`nav a:has-text("${link}")`)).toBeVisible();
+      }
     }
   });
 

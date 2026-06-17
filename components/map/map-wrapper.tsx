@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 
-interface PropertyMarker {
+export interface PropertyMarker {
   id: string;
   title: string;
   price: number;
@@ -119,15 +119,29 @@ export const MapWrapper: React.FC<MapWrapperProps> = ({ properties, onBoundsChan
         content: pricePill,
       });
 
+      const infoContent = document.createElement("div");
+      infoContent.style.color = "#18181b";
+      infoContent.style.fontFamily = "sans-serif";
+      infoContent.style.padding = "4px";
+      infoContent.style.maxWidth = "200px";
+
+      const title = document.createElement("h4");
+      title.style.margin = "0 0 4px 0";
+      title.style.fontSize = "14px";
+      title.style.fontWeight = "600";
+      title.textContent = prop.title;
+
+      const price = document.createElement("p");
+      price.style.margin = "0";
+      price.style.fontSize = "13px";
+      price.style.color = "#047857";
+      price.style.fontWeight = "500";
+      price.textContent = `₹${prop.price.toLocaleString("en-IN")}`;
+
+      infoContent.append(title, price);
+
       const infoWindow = new google.maps.InfoWindow({
-        content: `
-          <div style="color: #18181b; font-family: sans-serif; padding: 4px; max-width: 200px;">
-            <h4 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600;">${prop.title}</h4>
-            <p style="margin: 0; font-size: 13px; color: #047857; font-weight: 500;">
-              ₹${prop.price.toLocaleString("en-IN")}
-            </p>
-          </div>
-        `,
+        content: infoContent,
       });
 
       marker.addListener("click", () => {

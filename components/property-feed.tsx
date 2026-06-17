@@ -5,6 +5,7 @@ import { dataConnectClient } from "@/lib/firebase";
 import { PropertyCard, PropertyData } from "./property-card";
 import { PropertyCardSkeleton } from "./property-card-skeleton";
 import { motion, Variants } from "framer-motion";
+import { sampleListings } from "@/lib/sample-listings";
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -46,7 +47,8 @@ export function PropertyFeed() {
     );
   }
 
-  const properties = data?.properties || [];
+  const databaseProperties = data?.properties || [];
+  const properties = databaseProperties.length > 0 ? databaseProperties : sampleListings;
 
   if (properties.length === 0) {
     return (

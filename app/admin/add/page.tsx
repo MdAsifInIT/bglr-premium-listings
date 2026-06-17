@@ -1,53 +1,87 @@
 "use client";
 
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { AdminGuard } from "../components/admin-guard";
 import { useCreateProperty } from "@/src/dataconnect-generated/react";
 import { dataConnectClient } from "@/lib/firebase";
-import { Loader2, Plus, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { UploadZone } from "@/components/upload-zone";
+import { useToast } from "@/components/ui/toast";
+
+const propertySchema = z.object({
+  title: z.string().trim().min(5, "Title must be at least 5 characters").max(120, "Title is too long"),
+  description: z.string().trim().min(20, "Description must be at least 20 characters").max(3000, "Description is too long"),
+  price: z.coerce.number({ message: "Price must be a number" }).int().positive("Price must be positive").max(1000000000, "Price is too high"),
+  bhkCount: z.coerce.number({ message: "BHK must be a number" }).int().positive("BHK must be positive").max(12, "BHK count is too high"),
+  propertyType: z.enum(["Apartment", "Villa", "Penthouse", "Plot"]),
+  listingType: z.enum(["Rent", "Sale"]),
+  locality: z.enum(["Indiranagar", "HSR Layout", "Koramangala", "Whitefield", "Sadashivanagar", "Vittal Mallya Road"]),
+  latitude: z.coerce.number({ message: "Latitude must be a number" }).min(-90, "Latitude must be at least -90").max(90, "Latitude must be at most 90"),
+  longitude: z.coerce.number({ message: "Longitude must be a number" }).min(-180, "Longitude must be at least -180").max(180, "Longitude must be at most 180"),
+  imageUrls: z.array(z.string().url()).min(1, "Upload at least one property image").max(8, "Use up to 8 images"),
+});
+
+type PropertyFormInput = z.input<typeof propertySchema>;
+type PropertyFormValues = z.output<typeof propertySchema>;
+
+const inputClassName = "h-12 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border-stone-200 dark:border-zinc-800";
+const selectClassName = "w-full h-12 px-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all";
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p className="text-xs text-red-500 ml-1 mt-1">{message}</p>;
+}
 
 export default function AddPropertyPage() {
   const router = useRouter();
-  const { mutateAsync: createProperty, isPending, error } = useCreateProperty(dataConnectClient);
-  
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    price: "",
-    bhkCount: "",
-    propertyType: "Apartment",
-    listingType: "Sale",
-    locality: "Indiranagar",
-    latitude: "12.9784",
-    longitude: "77.6408",
-    imageUrls: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
+  const { toast } = useToast();
+  const { mutateAsync: createProperty } = useCreateProperty(dataConnectClient);
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<PropertyFormInput, unknown, PropertyFormValues>({
+    resolver: zodResolver(propertySchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      price: 25000000,
+      bhkCount: 3,
+      propertyType: "Apartment",
+      listingType: "Sale",
+      locality: "Indiranagar",
+      latitude: 12.9784,
+      longitude: 77.6408,
+      imageUrls: [],
+    },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: PropertyFormValues) => {
     try {
-      await createProperty({
-        title: formData.title,
-        description: formData.description,
-        price: parseInt(formData.price),
-        bhkCount: parseInt(formData.bhkCount),
-        propertyType: formData.propertyType,
-        listingType: formData.listingType,
-        locality: formData.locality,
-        latitude: parseFloat(formData.latitude),
-        longitude: parseFloat(formData.longitude),
-        imageUrls: formData.imageUrls.split(',').map(u => u.trim())
+      await createProperty(data);
+      toast({
+        variant: "success",
+        title: "Listing submitted",
+        description: "The property is now in the moderation queue.",
       });
       router.push("/admin");
     } catch (err) {
-      console.error("Failed to create property:", err);
+      const message = err instanceof Error ? err.message : "Failed to create property.";
+      toast({
+        variant: "error",
+        title: "Could not publish listing",
+        description: message,
+      });
     }
   };
 
@@ -58,7 +92,7 @@ export default function AddPropertyPage() {
           <Link href="/admin" className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 mb-6 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
           </Link>
-          
+
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="font-serif text-3xl font-semibold text-zinc-900 dark:text-zinc-100">Add Premium Listing</h1>
@@ -66,78 +100,105 @@ export default function AddPropertyPage() {
             </div>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-2xl border border-stone-200/50 dark:border-zinc-800/50 rounded-3xl p-8 shadow-sm"
           >
-            {error && (
-              <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 text-sm rounded-xl">
-                {error.message}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Title</label>
-                  <input name="title" value={formData.title} onChange={handleChange} required className="w-full h-12 px-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all" placeholder="e.g. Ultra Luxury Villa" />
+                  <Input {...register("title")} disabled={isSubmitting} className={inputClassName} placeholder="e.g. Ultra Luxury Villa" />
+                  <FieldError message={errors.title?.message} />
                 </div>
-                
+
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Price (INR)</label>
-                  <input type="number" name="price" value={formData.price} onChange={handleChange} required className="w-full h-12 px-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all" placeholder="25000000" />
+                  <Input type="number" {...register("price")} disabled={isSubmitting} className={inputClassName} placeholder="25000000" />
+                  <FieldError message={errors.price?.message} />
                 </div>
-                
+
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">BHK Count</label>
-                  <input type="number" name="bhkCount" value={formData.bhkCount} onChange={handleChange} required className="w-full h-12 px-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all" placeholder="4" />
+                  <Input type="number" {...register("bhkCount")} disabled={isSubmitting} className={inputClassName} placeholder="4" />
+                  <FieldError message={errors.bhkCount?.message} />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Locality</label>
-                  <select name="locality" value={formData.locality} onChange={handleChange} className="w-full h-12 px-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all">
+                  <select {...register("locality")} disabled={isSubmitting} className={selectClassName}>
                     <option>Indiranagar</option>
                     <option>HSR Layout</option>
                     <option>Koramangala</option>
                     <option>Whitefield</option>
                     <option>Sadashivanagar</option>
+                    <option>Vittal Mallya Road</option>
                   </select>
+                  <FieldError message={errors.locality?.message} />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Property Type</label>
-                  <select name="propertyType" value={formData.propertyType} onChange={handleChange} className="w-full h-12 px-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all">
+                  <select {...register("propertyType")} disabled={isSubmitting} className={selectClassName}>
                     <option>Apartment</option>
                     <option>Villa</option>
                     <option>Penthouse</option>
+                    <option>Plot</option>
                   </select>
+                  <FieldError message={errors.propertyType?.message} />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Listing Type</label>
-                  <select name="listingType" value={formData.listingType} onChange={handleChange} className="w-full h-12 px-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all">
+                  <select {...register("listingType")} disabled={isSubmitting} className={selectClassName}>
                     <option>Sale</option>
                     <option>Rent</option>
                   </select>
+                  <FieldError message={errors.listingType?.message} />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Latitude</label>
+                  <Input type="number" step="any" {...register("latitude")} disabled={isSubmitting} className={inputClassName} />
+                  <FieldError message={errors.latitude?.message} />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Longitude</label>
+                  <Input type="number" step="any" {...register("longitude")} disabled={isSubmitting} className={inputClassName} />
+                  <FieldError message={errors.longitude?.message} />
                 </div>
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Description</label>
-                <textarea name="description" value={formData.description} onChange={handleChange} required rows={4} className="w-full p-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none resize-none transition-all" placeholder="Enter luxurious property details..." />
+                <Textarea {...register("description")} disabled={isSubmitting} rows={5} className="rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border-stone-200 dark:border-zinc-800" placeholder="Enter property details, amenities, ownership notes, and viewing instructions." />
+                <FieldError message={errors.description?.message} />
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Image URLs (comma separated)</label>
-                <textarea name="imageUrls" value={formData.imageUrls} onChange={handleChange} required rows={2} className="w-full p-4 rounded-xl bg-stone-100/50 dark:bg-zinc-950/50 border border-stone-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500/50 outline-none resize-none transition-all" placeholder="https://..." />
+                <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1">Property Images</label>
+                <Controller
+                  name="imageUrls"
+                  control={control}
+                  render={({ field }) => (
+                    <UploadZone
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={isSubmitting}
+                      onError={(message) => toast({ variant: "error", title: "Image upload failed", description: message })}
+                    />
+                  )}
+                />
+                <FieldError message={errors.imageUrls?.message} />
               </div>
 
               <div className="flex justify-end pt-6">
-                <button type="submit" disabled={isPending} className="h-12 px-8 bg-emerald-900 dark:bg-emerald-950 hover:bg-emerald-800 dark:hover:bg-emerald-900 text-white rounded-xl font-medium flex items-center transition-colors disabled:opacity-70 shadow-sm">
-                  {isPending ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Plus className="w-5 h-5 mr-2" />}
+                <Button type="submit" loading={isSubmitting} className="h-12 px-8 bg-emerald-900 dark:bg-emerald-950 hover:bg-emerald-800 dark:hover:bg-emerald-900 text-white rounded-xl">
+                  <Plus className="w-5 h-5 mr-2" />
                   Publish Listing
-                </button>
+                </Button>
               </div>
             </form>
           </motion.div>

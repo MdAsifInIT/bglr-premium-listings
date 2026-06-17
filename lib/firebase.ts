@@ -25,7 +25,7 @@ export const dataConnectClient = getDataConnect(app, connectorConfig);
 
 // Automatically bind to local emulators during development runs
 if (process.env.NODE_ENV === "development") {
-    const g = globalThis as any;
+    const g = globalThis as typeof globalThis & { _firebaseEmulatorsConnected?: boolean };
     if (!g._firebaseEmulatorsConnected) {
         try {
             connectDataConnectEmulator(dataConnectClient, "127.0.0.1", 9399);

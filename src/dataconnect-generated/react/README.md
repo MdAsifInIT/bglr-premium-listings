@@ -19,6 +19,7 @@ You can also follow the instructions from the [Data Connect documentation](https
 - [**Queries**](#queries)
   - [*ListApprovedProperties*](#listapprovedproperties)
   - [*GetPropertyById*](#getpropertybyid)
+  - [*GetCurrentUser*](#getcurrentuser)
   - [*ListPendingProperties*](#listpendingproperties)
   - [*ListUserProperties*](#listuserproperties)
   - [*ListUserFavorites*](#listuserfavorites)
@@ -34,6 +35,7 @@ You can also follow the instructions from the [Data Connect documentation](https
   - [*CreateSavedSearch*](#createsavedsearch)
   - [*CreateLead*](#createlead)
   - [*RejectProperty*](#rejectproperty)
+  - [*UpdateProperty*](#updateproperty)
 
 # TanStack Query Firebase & TanStack React Query
 This SDK provides [React](https://react.dev/) hooks generated specific to your application, for the operations found in the connector `example`. These hooks are generated using [TanStack Query Firebase](https://react-query-firebase.invertase.dev/) by our partners at Invertase, a library built on top of [TanStack React Query v5](https://tanstack.com/query/v5/docs/framework/react/overview).
@@ -323,6 +325,81 @@ export default function GetPropertyByIdComponent() {
 }
 ```
 
+## GetCurrentUser
+You can execute the `GetCurrentUser` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
+
+```javascript
+useGetCurrentUser(dc: DataConnect, options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, undefined>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useGetCurrentUser(options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, undefined>;
+```
+
+### Variables
+The `GetCurrentUser` Query has no variables.
+### Return Type
+Recall that calling the `GetCurrentUser` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetCurrentUser` Query is of type `GetCurrentUserData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface GetCurrentUserData {
+  user?: {
+    id: string;
+    email: string;
+    fullName: string;
+    phoneNumber: string;
+    isAdmin: boolean;
+  } & User_Key;
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `GetCurrentUser`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig } from '@dataconnect/generated';
+import { useGetCurrentUser } from '@dataconnect/generated/react'
+
+export default function GetCurrentUserComponent() {
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useGetCurrentUser();
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useGetCurrentUser(dataConnect);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetCurrentUser(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetCurrentUser(dataConnect, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.user);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
 ## ListPendingProperties
 You can execute the `ListPendingProperties` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
 
@@ -351,6 +428,7 @@ export interface ListPendingPropertiesData {
     locality: string;
     propertyType: string;
     listingType: string;
+    imageUrls: string[];
     owner: {
       fullName: string;
     };
@@ -1628,6 +1706,120 @@ export default function RejectPropertyComponent() {
   // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
   if (mutation.isSuccess) {
     console.log(mutation.data.property_delete);
+  }
+  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## UpdateProperty
+You can execute the `UpdateProperty` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts)):
+```javascript
+useUpdateProperty(options?: useDataConnectMutationOptions<UpdatePropertyData, FirebaseError, UpdatePropertyVariables>): UseDataConnectMutationResult<UpdatePropertyData, UpdatePropertyVariables>;
+```
+You can also pass in a `DataConnect` instance to the Mutation hook function.
+```javascript
+useUpdateProperty(dc: DataConnect, options?: useDataConnectMutationOptions<UpdatePropertyData, FirebaseError, UpdatePropertyVariables>): UseDataConnectMutationResult<UpdatePropertyData, UpdatePropertyVariables>;
+```
+
+### Variables
+The `UpdateProperty` Mutation requires an argument of type `UpdatePropertyVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface UpdatePropertyVariables {
+  id: UUIDString;
+  title: string;
+  description: string;
+  price: number;
+  bhkCount: number;
+  propertyType: string;
+  listingType: string;
+  locality: string;
+  latitude: number;
+  longitude: number;
+  imageUrls: string[];
+}
+```
+### Return Type
+Recall that calling the `UpdateProperty` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
+
+To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
+
+To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
+
+To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `UpdateProperty` Mutation is of type `UpdatePropertyData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface UpdatePropertyData {
+  property_update?: Property_Key | null;
+}
+```
+
+To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
+
+### Using `UpdateProperty`'s Mutation hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, UpdatePropertyVariables } from '@dataconnect/generated';
+import { useUpdateProperty } from '@dataconnect/generated/react'
+
+export default function UpdatePropertyComponent() {
+  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
+  const mutation = useUpdateProperty();
+
+  // You can also pass in a `DataConnect` instance to the Mutation hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const mutation = useUpdateProperty(dataConnect);
+
+  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useUpdateProperty(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useUpdateProperty(dataConnect, options);
+
+  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
+  // The `useUpdateProperty` Mutation requires an argument of type `UpdatePropertyVariables`:
+  const updatePropertyVars: UpdatePropertyVariables = {
+    id: ..., 
+    title: ..., 
+    description: ..., 
+    price: ..., 
+    bhkCount: ..., 
+    propertyType: ..., 
+    listingType: ..., 
+    locality: ..., 
+    latitude: ..., 
+    longitude: ..., 
+    imageUrls: ..., 
+  };
+  mutation.mutate(updatePropertyVars);
+  // Variables can be defined inline as well.
+  mutation.mutate({ id: ..., title: ..., description: ..., price: ..., bhkCount: ..., propertyType: ..., listingType: ..., locality: ..., latitude: ..., longitude: ..., imageUrls: ..., });
+
+  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  mutation.mutate(updatePropertyVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Mutation.
+  if (mutation.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (mutation.isError) {
+    return <div>Error: {mutation.error.message}</div>;
+  }
+
+  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
+  if (mutation.isSuccess) {
+    console.log(mutation.data.property_update);
   }
   return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
 }
